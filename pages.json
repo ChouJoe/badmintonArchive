@@ -1,0 +1,142 @@
+{
+  "pages": [
+    {
+      "path": "pages/home/home",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#0f1117",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/equip-list/equip-list",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#0f1117",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/log/log",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#0f1117",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/stats/stats",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#0f1117",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/profile/profile",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#0f1117",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/equip-detail/equip-detail",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#0f1117",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/equip-edit/equip-edit",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#0f1117",
+        "navigationBarTextStyle": "white"
+      }
+    }
+  ],
+  "tabBar": {
+    "color": "#5c5c6e",
+    "selectedColor": "#C8FF1F",
+    "backgroundColor": "#0f1117",
+    "borderStyle": "black",
+    "iconfontSrc": "/static/iconfont.ttf",
+	"height": "56px",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "Home",
+        "iconfont": {
+          "text": "\ue7c6",
+          "selectedText": "\ue7c6",
+          "fontSize": "20px",
+          "color": "#5c5c6e",
+          "selectedColor": "#C8FF1F"
+        }
+      },
+      {
+        "pagePath": "pages/equip-list/equip-list",
+        "text": "Gear",
+        "iconPath": "static/icons/gear.png",
+        "selectedIconPath": "static/icons/gear-active.png",
+        "iconfont": {
+          "text": "\ueb96",
+          "selectedText": "\ueb96",
+          "fontSize": "20px",
+          "color": "#5c5c6e",
+          "selectedColor": "#C8FF1F"
+        }
+      },
+      {
+        "pagePath": "pages/log/log",
+        "text": "Log",
+        "iconPath": "static/icons/log.png",
+        "selectedIconPath": "static/icons/log-active.png",
+        "iconfont": {
+          "text": "\ue640",
+          "selectedText": "\ue640",
+          "fontSize": "20px",
+          "color": "#5c5c6e",
+          "selectedColor": "#C8FF1F"
+        }
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "Stats",
+        "iconPath": "static/icons/stats.png",
+        "selectedIconPath": "static/icons/stats-active.png",
+        "iconfont": {
+          "text": "\ue67c",
+          "selectedText": "\ue67c",
+          "fontSize": "20px",
+          "color": "#5c5c6e",
+          "selectedColor": "#C8FF1F"
+        }
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "Profile",
+        "iconPath": "static/icons/profile.png",
+        "selectedIconPath": "static/icons/profile-active.png",
+        "iconfont": {
+          "text": "\ueaa1",
+          "selectedText": "\ueaa1",
+          "fontSize": "20px",
+          "color": "#5c5c6e",
+          "selectedColor": "#C8FF1F"
+        }
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "羽记本",
+    "navigationBarBackgroundColor": "#0f1117",
+    "backgroundColor": "#0f1117",
+    "app-plus": {
+      "background": "#0f1117"
+    }
+  }
+}

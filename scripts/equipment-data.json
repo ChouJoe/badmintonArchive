@@ -1,0 +1,756 @@
+{
+  "rackets": {
+    "Yonex": {
+      "series": {
+        "Astrox": {
+          "description": "Head-heavy power series for aggressive attacking play",
+          "models": [
+            "Astrox 100 ZZ",
+            "Astrox 100 Game",
+            "Astrox 99 Pro",
+            "Astrox 99 Tour",
+            "Astrox 99 Game",
+            "Astrox 99 Play",
+            "Astrox 88 D Pro",
+            "Astrox 88 D Tour",
+            "Astrox 88 D Game",
+            "Astrox 88 D Play",
+            "Astrox 88 S Pro",
+            "Astrox 88 S Tour",
+            "Astrox 88 S Game",
+            "Astrox 88 S Play",
+            "Astrox 77 Pro",
+            "Astrox 77 Tour",
+            "Astrox 77 Play",
+            "Astrox 66",
+            "Astrox 7 DG"
+          ]
+        },
+        "Nanoflare": {
+          "description": "Head-light speed series for fast swings and control",
+          "models": [
+            "Nanoflare 1000 Z",
+            "Nanoflare 1000 Play",
+            "Nanoflare 800 Pro",
+            "Nanoflare 800 Tour",
+            "Nanoflare 800 Game",
+            "Nanoflare 800 Play",
+            "Nanoflare 700 Pro",
+            "Nanoflare 700 Tour",
+            "Nanoflare 700 Game",
+            "Nanoflare 700 Play",
+            "Nanoflare 600",
+            "Nanoflare 500",
+            "Nanoflare 370 Speed",
+            "Nanoflare 270 Speed"
+          ]
+        },
+        "Arcsaber": {
+          "description": "Even-balanced all-round series for control and placement",
+          "models": [
+            "Arcsaber 11 Pro",
+            "Arcsaber 11 Tour",
+            "Arcsaber 11 Play",
+            "Arcsaber 7 Pro",
+            "Arcsaber 7 Tour",
+            "Arcsaber 7 Play",
+            "Arcsaber 71 Light"
+          ]
+        },
+        "Duora": {
+          "description": "Dual-optimized frame for forehand power and backhand speed",
+          "models": [
+            "Duora 10",
+            "Duora 10 LT",
+            "Duora 7",
+            "Duora 6",
+            "Duora 33",
+            "Duora 55",
+            "Duora 77",
+            "Duora 88"
+          ]
+        }
+      }
+    },
+    "Li-Ning": {
+      "series": {
+        "Axforce": {
+          "description": "Power attack series (successor to N-series)",
+          "models": [
+            "Axforce 100",
+            "Axforce 90 Dragon Max",
+            "Axforce 90 Tiger Max",
+            "Axforce 80",
+            "Axforce 80 II",
+            "Axforce 70",
+            "Axforce 60",
+            "Axforce 50"
+          ]
+        },
+        "Bladex": {
+          "description": "Speed and control series",
+          "models": [
+            "Bladex 900 Max Moon",
+            "Bladex 900 Max Sun",
+            "Bladex 900 Moon",
+            "Bladex 900 Sun",
+            "Bladex 800",
+            "Bladex 700",
+            "Bladex 600",
+            "Bladex 500"
+          ]
+        },
+        "Tectonic": {
+          "description": "All-round control series",
+          "models": [
+            "Tectonic 9",
+            "Tectonic 7",
+            "Tectonic 7D",
+            "Tectonic 7I"
+          ]
+        },
+        "Halbertec": {
+          "description": "Heavy smash power series",
+          "models": [
+            "Halbertec 9000",
+            "Halbertec 8000",
+            "Halbertec 7000",
+            "Halbertec 6000",
+            "Halbertec 5000"
+          ]
+        },
+        "Windstorm": {
+          "description": "Super lightweight series",
+          "models": [
+            "Windstorm 79",
+            "Windstorm 78",
+            "Windstorm 72",
+            "Windstorm 700"
+          ]
+        },
+        "Turbo Charging": {
+          "description": "All-round performance series",
+          "models": [
+            "Turbo Charging 75",
+            "Turbo Charging 75C",
+            "Turbo Charging 75D",
+            "Turbo Charging 50"
+          ]
+        }
+      }
+    },
+    "Victor": {
+      "series": {
+        "Thruster": {
+          "description": "Head-heavy power attack series",
+          "models": [
+            "Thruster Ryuga II Pro",
+            "Thruster Ryuga II",
+            "Thruster Ryuga",
+            "Thruster F Claw II",
+            "Thruster F Claw II Pro",
+            "Thruster F",
+            "Thruster K Falcon",
+            "Thruster K 9900",
+            "Thruster TK-F Claw",
+            "Thruster TK-100"
+          ]
+        },
+        "Auraspeed": {
+          "description": "Head-light speed series",
+          "models": [
+            "Auraspeed 100X",
+            "Auraspeed 90S II",
+            "Auraspeed 90F II",
+            "Auraspeed 90K II",
+            "Auraspeed 90S",
+            "Auraspeed 90F",
+            "Auraspeed 80X",
+            "Auraspeed 70F",
+            "Auraspeed 70K",
+            "Auraspeed HS"
+          ]
+        },
+        "DriveX": {
+          "description": "All-round balanced series",
+          "models": [
+            "DriveX 9X",
+            "DriveX 10",
+            "DriveX 7K",
+            "DriveX 5R",
+            "DriveX 3"
+          ]
+        },
+        "Jetspeed": {
+          "description": "Speed and maneuverability series",
+          "models": [
+            "Jetspeed S 12 II",
+            "Jetspeed S 12F",
+            "Jetspeed S 12",
+            "Jetspeed S 11",
+            "Jetspeed S 10",
+            "Jetspeed S 800HT"
+          ]
+        },
+        "Brave Sword": {
+          "description": "Thin-frame speed series",
+          "models": [
+            "Brave Sword 12",
+            "Brave Sword 12L",
+            "Brave Sword 12N",
+            "Brave Sword 11",
+            "Brave Sword LYD"
+          ]
+        }
+      }
+    },
+    "Kawasaki": {
+      "series": {
+        "Honor": {
+          "description": "High-end performance series",
+          "models": [
+            "Honor S9",
+            "Honor S8",
+            "Honor S6"
+          ]
+        },
+        "Passion": {
+          "description": "Mid-range performance series",
+          "models": [
+            "Passion P5",
+            "Passion P3"
+          ]
+        },
+        "King": {
+          "description": "Professional series",
+          "models": [
+            "King K9",
+            "King K8",
+            "King K1"
+          ]
+        },
+        "Explore": {
+          "description": "Entry to mid-range series",
+          "models": [
+            "Explore X260",
+            "Explore X160"
+          ]
+        }
+      }
+    },
+    "Kason": {
+      "series": {
+        "Feather": {
+          "description": "Lightweight attack series (Li-Ning subsidiary)",
+          "models": [
+            "Feather K600",
+            "Feather K520",
+            "Feather K510"
+          ]
+        },
+        "Force": {
+          "description": "Power series",
+          "models": [
+            "Force T210",
+            "Force 5000",
+            "TSF 300A",
+            "TSF 500A",
+            "TSF 100Ti",
+            "TSF 105Ti"
+          ]
+        }
+      }
+    },
+    "Fleet": {
+      "series": {
+        "Professional": {
+          "description": "Malaysian brand high-end series",
+          "models": [
+            "Felet TJ Power",
+            "Felet TJ Power V2",
+            "Felet Woven 1000",
+            "Felet Woven 1000 III",
+            "Felet High Tension 68",
+            "Felet Storm 1",
+            "Felet Blink 10"
+          ]
+        }
+      }
+    },
+    "Apacs": {
+      "series": {
+        "Performance": {
+          "description": "Malaysian brand performance series",
+          "models": [
+            "Apacs Virtus 77",
+            "Apacs Virtus 88",
+            "Apacs Fantala 6.0 Speed",
+            "Apacs Fantala 6.0 Control",
+            "Apacs Z-Ziggler 72",
+            "Apacs Z-Ziggler 75",
+            "Apacs Featherweight 75",
+            "Apacs Featherweight 55",
+            "Apacs Nano Fusion Speed 722",
+            "Apacs Lethal 90"
+          ]
+        }
+      }
+    },
+    "Babolat": {
+      "series": {
+        "Performance": {
+          "description": "French brand badminton series",
+          "models": [
+            "Babolat X-Feel Blast",
+            "Babolat X-Feel Power",
+            "Babolat X-Feel Origin",
+            "Babolat X-Feel Rise",
+            "Babolat X-Feel Lite",
+            "Babolat Satelite Blast",
+            "Babolat Satelite Gravity 74",
+            "Babolat Satelite Gravity 78",
+            "Babolat Satelite Touch",
+            "Babolat Satelite Lite"
+          ]
+        }
+      }
+    },
+    "Carlton": {
+      "series": {
+        "Performance": {
+          "description": "British heritage badminton brand",
+          "models": [
+            "Carlton Kinesis Ultra",
+            "Carlton Kinesis Ultra Pro",
+            "Carlton Kinesis Ultra Tour",
+            "Carlton Vapour Trail 10.3",
+            "Carlton Powerblade Superlite",
+            "Carlton Aeroblade 600",
+            "Carlton Fireblade 300",
+            "Carlton Isoblade 6.0",
+            "Carlton Solar 800"
+          ]
+        }
+      }
+    },
+    "Forza": {
+      "series": {
+        "Performance": {
+          "description": "Danish brand performance series",
+          "models": [
+            "Forza Power 988M",
+            "Forza Power 988S",
+            "Forza Precision 12000",
+            "Forza Precision 10000",
+            "Forza Precision 8000",
+            "Forza Precision X1",
+            "Forza Aero Power 876",
+            "Forza Ti 1000",
+            "Forza HT Precision 76",
+            "Forza Light 11.1"
+          ]
+        }
+      }
+    }
+  },
+  "shoes": {
+    "Yonex": {
+      "series": {
+        "Power Cushion Aerus": {
+          "description": "Ultra-lightweight top-end performance",
+          "models": [
+            "Power Cushion Aerus Z",
+            "Power Cushion Aerus Z Wide",
+            "Power Cushion Aerus X",
+            "Power Cushion Aerus Z2 Men",
+            "Power Cushion Aerus Z2 Women"
+          ]
+        },
+        "Power Cushion Eclipsion": {
+          "description": "Stability and power",
+          "models": [
+            "Power Cushion Eclipsion Z",
+            "Power Cushion Eclipsion Z Wide",
+            "Power Cushion Eclipsion X"
+          ]
+        },
+        "Power Cushion 65": {
+          "description": "Mid-range all-round performance",
+          "models": [
+            "Power Cushion 65 Z4",
+            "Power Cushion 65 Z3",
+            "Power Cushion 65 X3",
+            "Power Cushion 65 Z Men",
+            "Power Cushion 65 Z Women",
+            "Power Cushion 65 Alpha"
+          ]
+        },
+        "Subaxia": {
+          "description": "New generation performance series",
+          "models": [
+            "Subaxia GT Men",
+            "Subaxia GT Women",
+            "Subaxia GT Wide"
+          ]
+        },
+        "Power Cushion Comfort": {
+          "description": "Comfort-focused mid-range",
+          "models": [
+            "Power Cushion Comfort Z",
+            "Power Cushion SHB 50",
+            "Power Cushion SHB 37",
+            "Power Cushion SHB 39",
+            "Power Cushion SHB 101"
+          ]
+        },
+        "Power Cushion 88 Dial": {
+          "description": "BOA/Dial closure system",
+          "models": [
+            "Power Cushion 88 Dial",
+            "Power Cushion 88 Dial Wide"
+          ]
+        }
+      }
+    },
+    "Li-Ning": {
+      "series": {
+        "Saga": {
+          "description": "High-end professional series",
+          "models": [
+            "Saga Pro",
+            "Saga II Pro",
+            "Saga II Lite",
+            "Saga Ace",
+            "Saga Ace II"
+          ]
+        },
+        "Ranger": {
+          "description": "All-round performance series",
+          "models": [
+            "Ranger IV TD",
+            "Ranger V TD",
+            "Ranger VI",
+            "Ranger Lite TD",
+            "Ranger Ace"
+          ]
+        },
+        "Blade": {
+          "description": "Speed-focused series",
+          "models": [
+            "Blade Pro",
+            "Blade Lite",
+            "Blade III"
+          ]
+        },
+        "Cloud Ace": {
+          "description": "Cloud cushioning series",
+          "models": [
+            "Cloud Ace",
+            "Cloud Ace II",
+            "Cloud Ace Ultra"
+          ]
+        }
+      }
+    },
+    "Victor": {
+      "series": {
+        "A-Series (Professional)": {
+          "description": "Top-end performance",
+          "models": [
+            "A970 ACE Pro",
+            "A970 ACE",
+            "A960",
+            "A950",
+            "A922"
+          ]
+        },
+        "P-Series (All-round)": {
+          "description": "All-round performance",
+          "models": [
+            "P9200 III TD",
+            "P9200 II",
+            "P8500 II",
+            "P8510"
+          ]
+        },
+        "S-Series": {
+          "description": "Speed series",
+          "models": [
+            "S99 Elite",
+            "S82 III",
+            "S82 II",
+            "S70"
+          ]
+        }
+      }
+    },
+    "Mizuno": {
+      "series": {
+        "Wave Fang": {
+          "description": "Professional-level speed",
+          "models": [
+            "Wave Fang Pro",
+            "Wave Fang Zero 2",
+            "Wave Fang NX",
+            "Wave Fang SS2"
+          ]
+        },
+        "Wave Claw": {
+          "description": "All-round stability",
+          "models": [
+            "Wave Claw 3",
+            "Wave Claw 2",
+            "Wave Claw Neo 2",
+            "Wave Claw EL 2"
+          ]
+        }
+      }
+    },
+    "Asics": {
+      "series": {
+        "Gel-Blade": {
+          "description": "Professional indoor court shoes",
+          "models": [
+            "Gel-Blade 8",
+            "Gel-Blade 7"
+          ]
+        },
+        "Gel-Rocket": {
+          "description": "Entry to mid-range indoor court",
+          "models": [
+            "Gel-Rocket 11",
+            "Gel-Rocket 10",
+            "Gel-Rocket 9"
+          ]
+        },
+        "Court Control": {
+          "description": "Court control series",
+          "models": [
+            "Court Control FF 3",
+            "Court Control FF 2"
+          ]
+        },
+        "Upcourt": {
+          "description": "Entry-level indoor court",
+          "models": [
+            "Upcourt 6",
+            "Upcourt 5"
+          ]
+        }
+      }
+    }
+  },
+  "bags": {
+    "Yonex": {
+      "series": {
+        "Pro Series": {
+          "description": "Top-tier professional tournament bags",
+          "models": [
+            "Pro Racquet Bag 9 Pcs (BAG92429)",
+            "Pro Racquet Bag 6 (BAG92426)",
+            "Pro Tournament Bag",
+            "Pro Trolley Bag",
+            "Pro Backpack L",
+            "Pro Backpack B",
+            "Pro Backpack M"
+          ]
+        },
+        "Expert Series": {
+          "description": "High-performance bags",
+          "models": [
+            "Expert Tournament Bag",
+            "Expert Racquet Bag 6 Pcs",
+            "Expert Backpack",
+            "Expert Boston Bag"
+          ]
+        },
+        "Compact Series": {
+          "description": "Compact everyday bags",
+          "models": [
+            "Compact Racquet Bag",
+            "Compact Tote Bag Wide",
+            "Compact Backpack"
+          ]
+        },
+        "Club Series": {
+          "description": "Entry-level club player bags",
+          "models": [
+            "Club Racquet Bag",
+            "Club Backpack",
+            "Club Line Shoe Bag"
+          ]
+        },
+        "Pro Support Series": {
+          "description": "Support and accessory bags",
+          "models": [
+            "Pro Shoe Bag",
+            "Pro Support Pouch"
+          ]
+        }
+      }
+    },
+    "Li-Ning": {
+      "series": {
+        "Professional": {
+          "description": "Professional tournament bags",
+          "models": [
+            "9-Racket Tournament Bag",
+            "6-Racket Tournament Bag",
+            "Pro Rectangular Bag",
+            "Pro Backpack"
+          ]
+        },
+        "Standard": {
+          "description": "Standard player bags",
+          "models": [
+            "6-Racket Bag",
+            "3-Racket Bag",
+            "Rectangular Backpack",
+            "Shuttle Bag"
+          ]
+        }
+      }
+    },
+    "Victor": {
+      "series": {
+        "Supreme": {
+          "description": "Top professional bags",
+          "models": [
+            "Supreme 12 Racket Multi-Thermo Bag (BR9611)",
+            "Supreme Rectangular Bag (BR9613)",
+            "Supreme Backpack (BR9612)"
+          ]
+        },
+        "Flash": {
+          "description": "Performance bags",
+          "models": [
+            "Flash 12 Racket Multi-Thermo Bag (BR5215)",
+            "Flash Rectangular Racket Bag (BR5613)",
+            "Flash Backpack (BR5012)"
+          ]
+        },
+        "Standard": {
+          "description": "Standard bags",
+          "models": [
+            "12 Racket Bag (BR9209)",
+            "6 Racket Bag (BR6213)",
+            "Double-strap Backpack (BR6013)"
+          ]
+        }
+      }
+    }
+  },
+  "shuttles": {
+    "Yonex": {
+      "series": {
+        "Aerosensa (Feather - Tournament)": {
+          "description": "Premium feather shuttlecocks for competition (AS = Aerosensa)",
+          "models": [
+            "Aerosensa 50 (AS-50) - BWF Tournament Grade",
+            "Aerosensa 40 (AS-40) - High Competition Grade",
+            "Aerosensa 30 (AS-30) - Competition Grade",
+            "Aerosensa 20 (AS-20) - Club Grade",
+            "Aerosensa 10 (AS-10) - Practice Grade"
+          ]
+        },
+        "Aeroclub (Feather - Club)": {
+          "description": "Club-level feather shuttlecocks",
+          "models": [
+            "Aeroclub 33 (ACB-33)",
+            "Aeroclub 11 (ACB-11)",
+            "Aeroclub 03 (ACB-03)",
+            "Aeroclub TR (Training)"
+          ]
+        },
+        "Crosswind (Feather)": {
+          "description": "New generation feather shuttlecock",
+          "models": [
+            "Crosswind 70"
+          ]
+        },
+        "League (Feather)": {
+          "description": "League play grade",
+          "models": [
+            "League 7"
+          ]
+        },
+        "Mavis (Nylon)": {
+          "description": "Synthetic/nylon shuttlecocks for recreational play",
+          "models": [
+            "Mavis 2000",
+            "Mavis 600",
+            "Mavis 500",
+            "Mavis 350",
+            "Mavis 300",
+            "Mavis 200",
+            "Mavis 10"
+          ]
+        }
+      }
+    },
+    "Li-Ning": {
+      "series": {
+        "A+ (Premium Feather)": {
+          "description": "BWF-approved tournament grade",
+          "models": [
+            "A+900",
+            "A+800",
+            "A+700",
+            "A+600",
+            "A+300"
+          ]
+        },
+        "A (Standard Feather)": {
+          "description": "Standard feather shuttlecocks",
+          "models": [
+            "A+90",
+            "A+80",
+            "A+70",
+            "A+60",
+            "D50",
+            "D40",
+            "D30"
+          ]
+        },
+        "Nylon": {
+          "description": "Synthetic shuttlecocks",
+          "models": [
+            "A+100 (Nylon)",
+            "EG510 (Nylon)"
+          ]
+        }
+      }
+    },
+    "Victor": {
+      "series": {
+        "Champion/Master (Tournament)": {
+          "description": "BWF-approved tournament grade",
+          "models": [
+            "Master Ace (BWF Tournament)",
+            "Champion No. 1",
+            "Champion No. 3"
+          ]
+        },
+        "Gold (Competition)": {
+          "description": "Competition grade feather",
+          "models": [
+            "Gold No. 1",
+            "Gold No. 3",
+            "Gold Champion",
+            "Gold Special"
+          ]
+        },
+        "Silver/Training": {
+          "description": "Training and recreational",
+          "models": [
+            "Silver Special",
+            "Training",
+            "NS-2000 (Nylon)",
+            "NS-3000 (Nylon)",
+            "AS-Shuttle (Nylon Outdoor)"
+          ]
+        }
+      }
+    }
+  }
+}
