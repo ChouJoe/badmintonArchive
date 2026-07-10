@@ -1,6 +1,8 @@
 @font-face {
-  font-family: "iconfont";
-  src: url('/static/iconfont.ttf') format('truetype');
+  font-family: "iconfont"; /* Project id 5206775 */
+  src: url('iconfont.woff2?t=1783587323927') format('woff2'),
+       url('iconfont.woff?t=1783587323927') format('woff'),
+       url('./iconfont.ttf') format('truetype');
 }
 
 .iconfont {
@@ -23,8 +25,20 @@
   content: "\e7c6";
 }
 
+.icon-bags:before {
+  content: "\e60a";
+}
+
 .icon-rili1:before {
   content: "\e662";
+}
+
+.icon-shoes:before {
+  content: "\e6a0";
+}
+
+.icon-racket:before {
+  content: "\e622";
 }
 
 .icon-statics:before {

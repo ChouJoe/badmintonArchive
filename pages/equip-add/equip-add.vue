@@ -1,11 +1,15 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { addEquip } from '@/utils/storage'
+import { ref, computed } from 'vue'
+import { useEquipmentStore } from '@/stores/equipment'
 import { getBrandsByType, getModelsByBrand, getBrandLogo, getModelImageUrl } from '@/utils/equipment-data'
 
 const popup = ref(null)
 
 const emit = defineEmits(['close', 'added'])
+const store = useEquipmentStore()
+
+/** @type {import('vue').Ref<{id:number}|null>} */
+const editingItem = ref(null)
 
 // Form state
 const form = ref({
@@ -73,25 +77,14 @@ const formValid = computed(() => {
   return form.value.brand.trim() !== '' && form.value.model.trim() !== ''
 })
 
-// Reset brand/model when type changes
-watch(() => form.value.type, () => {
+function selectType(key) {
+  form.value.type = key
   form.value.brand = ''
   form.value.model = ''
   isCustomBrand.value = false
   isCustomModel.value = false
   brandSearchText.value = ''
   modelSearchText.value = ''
-})
-
-// Reset model when brand changes
-watch(() => form.value.brand, () => {
-  form.value.model = ''
-  isCustomModel.value = false
-  modelSearchText.value = ''
-})
-
-function selectType(key) {
-  form.value.type = key
 }
 
 function setRating(index) {
@@ -116,6 +109,9 @@ function selectBrand(brand) {
   form.value.brand = brand.name
   isCustomBrand.value = false
   showBrandPicker.value = false
+  form.value.model = ''
+  isCustomModel.value = false
+  modelSearchText.value = ''
 }
 
 function useCustomBrand() {
@@ -124,6 +120,9 @@ function useCustomBrand() {
     isCustomBrand.value = true
   }
   showBrandPicker.value = false
+  form.value.model = ''
+  isCustomModel.value = false
+  modelSearchText.value = ''
 }
 
 // Model picker
@@ -150,7 +149,38 @@ function useCustomModel() {
   showModelPicker.value = false
 }
 
-function open() {
+const isEditMode = computed(() => editingItem.value !== null)
+
+function open(editData) {
+  if (editData) {
+    editingItem.value = editData
+    form.value = {
+      type: editData.type || 'racket',
+      brand: editData.brand || '',
+      model: editData.model || '',
+      price: editData.price ? String(editData.price) : '',
+      buyDate: editData.buyDate || '',
+      rating: editData.rating || 5,
+      retired: editData.retired || false,
+      tag: editData.tag || '',
+      note: editData.note || ''
+    }
+  } else {
+    editingItem.value = null
+    form.value = {
+      type: 'racket',
+      brand: '',
+      model: '',
+      price: '',
+      buyDate: '',
+      rating: 5,
+      retired: false,
+      tag: '',
+      note: ''
+    }
+    isCustomBrand.value = false
+    isCustomModel.value = false
+  }
   popup.value.open()
 }
 
@@ -176,7 +206,6 @@ function handleSubmit() {
   }
 
   const equip = {
-    id: Date.now(),
     type: form.value.type,
     brand: form.value.brand.trim(),
     model: form.value.model.trim(),
@@ -189,8 +218,15 @@ function handleSubmit() {
     usage: '0'
   }
 
-  addEquip(equip)
-  uni.showToast({ title: '添加成功', icon: 'success' })
+  if (isEditMode.value) {
+    equip.id = editingItem.value.id
+    store.update(editingItem.value.id, equip)
+    uni.showToast({ title: '更新成功', icon: 'success' })
+  } else {
+    equip.id = Date.now()
+    store.add(equip)
+    uni.showToast({ title: '添加成功', icon: 'success' })
+  }
 
   // Reset form
   form.value = {
@@ -211,6 +247,21 @@ function handleSubmit() {
   close()
 }
 
+function handleDelete() {
+  uni.showModal({
+    title: '确认删除',
+    content: '确认删除这件装备记录吗？此操作不可恢复。',
+    success: (res) => {
+      if (res.confirm) {
+        store.remove(editingItem.value.id)
+        uni.showToast({ title: '删除成功', icon: 'success' })
+        emit('added')
+        close()
+      }
+    }
+  })
+}
+
 const today = new Date().toISOString().split('T')[0]
 
 defineExpose({ open, close })
@@ -229,10 +280,15 @@ defineExpose({ open, close })
         <view class="panel-close" @tap="close">
           <text class="panel-close-icon">✕</text>
         </view>
-        <text class="panel-title">Add Equipment</text>
-        <button class="panel-submit" :disabled="!formValid" @tap="handleSubmit">
-          <text class="panel-submit-text">Add</text>
-        </button>
+        <text class="panel-title">{{ isEditMode ? 'Edit Equipment' : 'Add Equipment' }}</text>
+        <view class="panel-header-right">
+          <button v-if="isEditMode" class="panel-delete" @tap="handleDelete">
+            <text class="panel-delete-text">Delete</text>
+          </button>
+          <button class="panel-submit" :disabled="!formValid" @tap="handleSubmit">
+            <text class="panel-submit-text">{{ isEditMode ? 'Update' : 'Add' }}</text>
+          </button>
+        </view>
       </view>
 
       <!-- Scrollable form content -->
@@ -396,11 +452,9 @@ defineExpose({ open, close })
           <view class="picker-search">
             <input
               class="picker-search-input"
-              :value="brandSearchText"
-              @input="e => brandSearchText = e.detail.value"
+              v-model="brandSearchText"
               placeholder="Search or type custom brand..."
               placeholder-class="input-placeholder"
-              :focus="showBrandPicker"
             />
           </view>
           <scroll-view scroll-y class="picker-list">
@@ -440,7 +494,6 @@ defineExpose({ open, close })
               @input="e => modelSearchText = e.detail.value"
               placeholder="Search or type custom model..."
               placeholder-class="input-placeholder"
-              :focus="showModelPicker"
             />
           </view>
           <scroll-view scroll-y class="picker-list">
@@ -486,11 +539,7 @@ defineExpose({ open, close })
   position: relative;
   font-family: sans-serif;
 }
-.panel *,
-.panel *::before,
-.panel *::after {
-  box-sizing: border-box;
-}
+
 
 .panel-indicator {
   display: flex;
@@ -529,6 +578,26 @@ defineExpose({ open, close })
   font-size: 32rpx;
   font-weight: 700;
   color: #ffffff;
+}
+.panel-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+.panel-delete {
+  background-color: #ef444439;
+  border-radius: 28rpx;
+  padding: 12rpx 24rpx;
+  margin: 0;
+  outline: none;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+.panel-delete-text {
+  font-size: 26rpx;
+  color: #ef4444;
+  font-weight: 600;
 }
 .panel-submit {
   background-color: #2a2f38;
@@ -812,10 +881,11 @@ defineExpose({ open, close })
   background-color: #1e2430;
   border: 1rpx solid #2a3040;
   border-radius: 16rpx;
-  padding: 20rpx 28rpx;
+  padding:0.2rem 0.875rem;
   font-size: 28rpx;
   color: #ffffff;
   width: 100%;
+  height:2rem;
   box-sizing: border-box;
 }
 
@@ -848,7 +918,7 @@ defineExpose({ open, close })
 
 /* Spacer inside picker list for bottom breathing room */
 .picker-list-spacer {
-  height: 60rpx;
+  height: 200rpx;
 }
 
 /* Empty */

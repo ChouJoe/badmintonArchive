@@ -1,22 +1,22 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getEquipList } from '@/utils/storage'
-import { getModelImageUrl, getBrandLogo } from '@/utils/equipment-data'
+import { useEquipmentStore } from '@/stores/equipment'
+
+import EquipCard from '@/components/EquipCard.vue'
 import EquipEmpty from './equip-empty.vue'
 import EquipAdd from '@/pages/equip-add/equip-add.vue'
 
-const equipList = ref([])
+const store = useEquipmentStore()
 const equipAddRef = ref(null)
 
 const activeType = ref('all')
 const activeStatus = ref('inuse')
 
 const typeLabels = {
-  racket: '球拍',
-  shoes: '球鞋',
-  bag: '球包',
-  shuttle: '羽毛球',
+  racket: "\ue622",
+  shoes: "\ue6a0",
+  bag: "\ue60a",
   other: '其他'
 }
 
@@ -30,7 +30,7 @@ const typeFilterOptions = [
 ]
 
 const filteredList = computed(() => {
-  let list = equipList.value
+  let list = store.list
   if (activeType.value !== 'all') {
     list = list.filter(item => item.type === activeType.value)
   }
@@ -43,7 +43,7 @@ const filteredList = computed(() => {
 })
 
 const inUseCount = computed(() => {
-  let list = equipList.value
+  let list = store.list
   if (activeType.value !== 'all') {
     list = list.filter(item => item.type === activeType.value)
   }
@@ -51,42 +51,22 @@ const inUseCount = computed(() => {
 })
 
 const retiredCount = computed(() => {
-  let list = equipList.value
+  let list = store.list
   if (activeType.value !== 'all') {
     list = list.filter(item => item.type === activeType.value)
   }
   return list.filter(item => item.retired).length
 })
 
-const isEmptyList = computed(()=>{
-	return equipList.value.length === 0
-})
+const isEmptyList = computed(() => store.list.length === 0)
 
 function loadData() {
-  equipList.value = getEquipList()
-}
-
-function getCardImage(item) {
-  return getModelImageUrl(item.brand, item.model) || getBrandLogo(item.brand)
-}
-
-function calcUsageTime(buyDate) {
-  if (!buyDate) return null
-  const buy = new Date(buyDate)
-  const now = new Date()
-  const diff = now - buy
-  if (diff < 0) return '尚未使用'
-  const days = Math.floor(diff / 86400000)
-  if (days < 30) return `${days} 天`
-  const months = Math.floor(days / 30)
-  if (months < 12) return `${months} 个月`
-  const years = Math.floor(days / 365)
-  const remainMonths = Math.floor((days % 365) / 30)
-  return remainMonths > 0 ? `${years} 年 ${remainMonths} 个月` : `${years} 年`
+  store.load()
 }
 
 function goDetail(id) {
-  uni.navigateTo({ url: `/pages/equip-detail/equip-detail?id=${id}` })
+  const item = store.getEquipById(id)
+  equipAddRef.value.open(item)
 }
 
 function openAddPanel() {
@@ -156,38 +136,13 @@ onShow(() => {
       </view>
 
       <view v-else class="list">
-        <view
+        <EquipCard
           v-for="item in filteredList"
           :key="item.id"
-          class="card"
-          @tap="goDetail(item.id)"
-        >
-          <image
-            class="card-bg"
-            :src="getCardImage(item)"
-            mode="aspectFill"
-          />
-          <view class="card-overlay"></view>
-          <view class="card-content">
-            <view class="card-top">
-              <view class="card-info">
-                <text class="card-name">{{ item.brand }} {{ item.model }}</text>
-                <text class="card-date">购入 {{ item.buyDate || 'N/A' }}</text>
-              </view>
-              <text class="card-type-badge">{{ typeLabels[item.type] || item.type }}</text>
-            </view>
-            <view class="card-mid">
-              <text class="card-usage-label">已使用</text>
-              <text class="card-usage-value">{{ calcUsageTime(item.buyDate) || '—' }}</text>
-            </view>
-            <view class="card-bottom">
-              <text class="card-price" v-if="item.price">¥{{ item.price }}</text>
-              <text class="card-status" :class="{ retired: item.retired }">
-                {{ item.retired ? '已淘汰' : '使用中' }}
-              </text>
-            </view>
-          </view>
-        </view>
+          :item="item"
+          :type-labels="typeLabels"
+          @click="goDetail(item.id)"
+        />
       </view>
     </view>
 
@@ -198,7 +153,7 @@ onShow(() => {
 <style scoped>
 .container {
   min-height: 100vh;
-  background-color: #0a0e14;
+  background-color: #111318;
   padding-bottom: 40rpx;
 }
 
@@ -348,111 +303,6 @@ onShow(() => {
   display: flex;
   flex-direction: column;
   gap: 24rpx;
-}
-
-/* Card */
-.card {
-  position: relative;
-  border-radius: 20rpx;
-  overflow: hidden;
-  min-height: 240rpx;
-}
-.card-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-.card-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.15) 100%);
-}
-.card-content {
-  position: relative;
-  z-index: 1;
-  padding: 28rpx;
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-}
-
-.card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-.card-info {
-  flex: 1;
-  margin-right: 16rpx;
-}
-.card-name {
-  font-size: 32rpx;
-  font-weight: 700;
-  color: #ffffff;
-  display: block;
-  margin-bottom: 6rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.card-date {
-  font-size: 22rpx;
-  color: rgba(255,255,255,0.6);
-}
-.card-type-badge {
-  font-size: 22rpx;
-  color: #ffffff;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(4px);
-  padding: 6rpx 20rpx;
-  border-radius: 20rpx;
-  flex-shrink: 0;
-  border: 1rpx solid rgba(255,255,255,0.15);
-}
-
-.card-mid {
-  display: flex;
-  align-items: baseline;
-  gap: 10rpx;
-}
-.card-usage-label {
-  font-size: 22rpx;
-  color: rgba(255,255,255,0.5);
-}
-.card-usage-value {
-  font-size: 40rpx;
-  font-weight: 800;
-  color: #C8FF1F;
-  letter-spacing: 1rpx;
-}
-
-.card-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 4rpx;
-}
-.card-price {
-  font-size: 28rpx;
-  color: #fbbf24;
-  font-weight: 700;
-}
-.card-status {
-  font-size: 24rpx;
-  color: #4ade80;
-  font-weight: 600;
-  background: rgba(74, 222, 128, 0.15);
-  padding: 4rpx 18rpx;
-  border-radius: 20rpx;
-}
-.card-status.retired {
-  color: #6b7280;
-  background: rgba(107, 114, 128, 0.15);
 }
 
 /* FAB */
