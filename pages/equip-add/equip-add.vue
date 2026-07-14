@@ -442,7 +442,7 @@ defineExpose({ open, close })
 
       <!-- Brand Picker Overlay -->
       <view v-if="showBrandPicker" class="picker-overlay" @tap.self="closeBrandPicker">
-        <view class="picker-panel">
+        <view class="picker-panel" @tap.stop>
           <view class="picker-header">
             <text class="picker-title">Select Brand</text>
             <view class="picker-close" @tap="closeBrandPicker">
@@ -480,7 +480,7 @@ defineExpose({ open, close })
 
       <!-- Model Picker Overlay -->
       <view v-if="showModelPicker" class="picker-overlay" @tap.self="closeModelPicker">
-        <view class="picker-panel">
+        <view class="picker-panel" @tap.stop>
           <view class="picker-header">
             <text class="picker-title">Select Model</text>
             <view class="picker-close" @tap="closeModelPicker">
