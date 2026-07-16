@@ -30,7 +30,7 @@ onShow(() => {
         <text class="nickname">{{ userStore.nickname || '请输入昵称' }}</text>
       </view>
       <view class="header-edit" @tap="showEditPopup = true">
-        <text class="edit-icon">✎</text>
+        <image class="edit-icon" src="/static/icons/edit.svg" mode="aspectFit" />
       </view>
     </view>
 
@@ -114,8 +114,8 @@ onShow(() => {
   justify-content: center;
 }
 .edit-icon {
-  font-size: 36rpx;
-  color: #9ca3af;
+  width: 44rpx;
+  height: 44rpx;
 }
 
 /* Section */

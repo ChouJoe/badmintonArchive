@@ -28,7 +28,7 @@ function setRating(index) {
       :class="{ filled }"
       @tap="setRating(index)"
     ></view>
-	<text class='rating-text'>{{props.modelValue +'/'+ props.max}}</text>
+	<text class="rating-text">{{ props.modelValue }}/{{ props.max }}</text>
   </view>
 </template>
 

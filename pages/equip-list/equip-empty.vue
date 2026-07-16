@@ -17,19 +17,19 @@ function handleAdd() {
     </view>
 
     <view class="empty-text-area">
-      <text class="empty-title-white">Your gear archive</text>
-      <text class="empty-title-accent">starts here.</text>
+      <text class="empty-title-white">你的装备库</text>
+      <text class="empty-title-accent">从这里开始。</text>
     </view>
 
     <text class="empty-desc">
-      Add your rackets, shoes, shuttles — and build a living record of your badminton gear over time.
+      添加你的球拍、球鞋、羽毛球——建立一份随时间更新的羽球装备记录。
     </text>
 
     <view class="empty-cta" @tap="handleAdd">
-      <text class="empty-cta-text">+   Add Your First Piece of Gear</text>
+      <text class="empty-cta-text">+   添加第一件装备</text>
     </view>
 
-    <text class="empty-hint">Tap any card later to edit or remove it</text>
+    <text class="empty-hint">之后点击卡片可以编辑或删除</text>
   </view>
 </template>
 

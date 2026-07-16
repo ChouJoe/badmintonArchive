@@ -39,7 +39,7 @@ export const useEquipmentStore = defineStore('equipment', {
     },
 
     getEquipById(id) {
-      return storage.getEquipById(id)
+      return this.getById(id)
     }
   }
 })

@@ -2,31 +2,24 @@
 import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { useEquipmentStore } from '@/stores/equipment'
-
+import { useExpenseStore } from '@/stores/expense'
+import { EQUIP_TYPE_ICONS } from '@/utils/equipment-data'
 import EquipCard from '@/components/EquipCard.vue'
 import EquipEmpty from './equip-empty.vue'
-import EquipAdd from '@/pages/equip-add/equip-add.vue'
 
 const store = useEquipmentStore()
-const equipAddRef = ref(null)
+const expenseStore = useExpenseStore()
 
 const activeType = ref('all')
 const activeStatus = ref('inuse')
 
-const typeLabels = {
-  racket: "\ue622",
-  shoes: "\ue6a0",
-  bag: "\ue60a",
-  other: '其他'
-}
-
 const typeFilterOptions = [
-  { key: 'all', label: 'All' },
-  { key: 'racket', label: 'Racket' },
-  { key: 'shoes', label: 'Shoes' },
-  { key: 'shuttle', label: 'Shuttle' },
-  { key: 'bag', label: 'Bag' },
-  { key: 'other', label: 'Other' },
+  { key: 'all', label: '全部' },
+  { key: 'racket', label: '球拍' },
+  { key: 'shoes', label: '球鞋' },
+  { key: 'shuttle', label: '羽毛球' },
+  { key: 'bag', label: '球包' },
+  { key: 'other', label: '其他' },
 ]
 
 const filteredList = computed(() => {
@@ -65,20 +58,19 @@ function loadData() {
 }
 
 function goDetail(id) {
-  const item = store.getEquipById(id)
-  equipAddRef.value.open(item)
+  uni.navigateTo({ url: `/pages/equip-detail/equip-detail?id=${id}` })
 }
 
 function openAddPanel() {
-  equipAddRef.value.open()
-}
-
-function onEquipAdded() {
-  loadData()
+  uni.navigateTo({ url: '/pages/equip-form/equip-form' })
 }
 
 onShow(() => {
   loadData()
+  expenseStore.load()
+  if (store.list.length > 0) {
+    expenseStore.migrateFromEquipment(store.list)
+  }
 })
 </script>
 
@@ -86,13 +78,13 @@ onShow(() => {
   <view class="container">
     <view class="header">
       <view class="header-left">
-        <text class="header-title-white">Equipment</text>
-        <text class="header-title-accent">Library</text>
+        <text class="header-title-white">装备</text>
+        <text class="header-title-accent">库</text>
       </view>
       <view class="header-right" v-if="!isEmptyList">
         <button class="capsule capsule-add" @tap="openAddPanel">
           <view class="capsule-add-icon">+</view>
-          <view class="capsule-add-text">Add</view>
+          <view class="capsule-add-text">添加</view>
         </button>
       </view>
     </view>
@@ -116,14 +108,14 @@ onShow(() => {
           :class="{ active: activeStatus === 'inuse' }"
           @tap="activeStatus = 'inuse'"
         >
-          <text class="status-tab-text">In Use ({{ inUseCount }})</text>
+          <text class="status-tab-text">使用中 ({{ inUseCount }})</text>
         </view>
         <view
           class="status-tab"
           :class="{ active: activeStatus === 'retired' }"
           @tap="activeStatus = 'retired'"
         >
-          <text class="status-tab-text">Retired ({{ retiredCount }})</text>
+          <text class="status-tab-text">已淘汰 ({{ retiredCount }})</text>
         </view>
       </view>
     </view>
@@ -140,13 +132,12 @@ onShow(() => {
           v-for="item in filteredList"
           :key="item.id"
           :item="item"
-          :type-labels="typeLabels"
+          :type-labels="EQUIP_TYPE_ICONS"
           @click="goDetail(item.id)"
         />
       </view>
     </view>
 
-    <EquipAdd ref="equipAddRef" @added="onEquipAdded" />
   </view>
 </template>
 

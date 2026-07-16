@@ -377,3 +377,11 @@ export function getBrandLogo(brandName) {
   }
   return null
 }
+
+export const EQUIP_TYPE_ICONS = {
+  racket: '\ue622',
+  shoes: '\ue6a0',
+  bag: '\ue60a',
+  shuttle: '\ue622',
+  other: '其他'
+}
