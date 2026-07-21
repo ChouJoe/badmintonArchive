@@ -123,17 +123,15 @@ const gripPercent = computed(() => {
 
 const stringingBarColor = computed(() => {
   if (stringingPercent.value === null) return '#C8FF1F'
-  if (stringingPercent.value >= 100) return '#ff000069'
-  if (stringingPercent.value >= 85) return '#ffa400ad'
-  if (stringingPercent.value >= 70) return '#ffa400ad'
+  if (stringingPercent.value >= 90) return '#ff0000d1'
+  if (stringingPercent.value >= 80) return '#f5b912'
   return '#C8FF1F'
 })
 
 const gripBarColor = computed(() => {
   if (gripPercent.value === null) return '#C8FF1F'
-  if (gripPercent.value >= 100) return '#ff000069'
-  if (gripPercent.value >= 85) return '#ffa400ad'
-  if (gripPercent.value >= 70) return '#ffa400ad'
+  if (gripPercent.value >= 90) return '#ff0000d1'
+  if (gripPercent.value >= 80) return '#f5b912'
   return '#C8FF1F'
 })
 
