@@ -1,0 +1,44 @@
+{
+  "bsonType": "object",
+  "required": ["user_id", "equipment_id"],
+  "permission": {
+    "read": "doc.user_id == auth.uid",
+    "create": "auth.uid != null",
+    "update": "doc.user_id == auth.uid",
+    "delete": "doc.user_id == auth.uid"
+  },
+  "properties": {
+    "_id": {
+      "description": "文档ID"
+    },
+    "user_id": {
+      "bsonType": "string",
+      "description": "所属用户ID",
+      "foreignKey": "uni-id-users._id",
+      "defaultValue": {
+        "$env": "uid"
+      }
+    },
+    "equipment_id": {
+      "bsonType": "string",
+      "description": "关联装备ID",
+      "foreignKey": "ba-equipment._id"
+    },
+    "price": {
+      "bsonType": "double",
+      "description": "价格"
+    },
+    "date": {
+      "bsonType": "string",
+      "description": "更换日期 YYYY-MM-DD"
+    },
+    "note": {
+      "bsonType": "string",
+      "description": "备注"
+    },
+    "created_at": {
+      "bsonType": "timestamp",
+      "description": "创建时间"
+    }
+  }
+}

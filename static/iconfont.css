@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 5206775 */
-  src: url('iconfont.woff2?t=1783587323927') format('woff2'),
-       url('iconfont.woff?t=1783587323927') format('woff'),
-       url('./iconfont.ttf') format('truetype');
+  src: url('iconfont.woff2?t=1784562194966') format('woff2'),
+       url('iconfont.woff?t=1784562194966') format('woff'),
+       url('iconfont.ttf?t=1784562194966') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,34 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-yumaoqiu:before {
+  content: "\e7a3";
+}
+
+.icon-icon:before {
+  content: "\e65f";
+}
+
+.icon-wazi:before {
+  content: "\e606";
+}
+
+.icon-huxi:before {
+  content: "\e608";
+}
+
+.icon-ziyuan:before {
+  content: "\e650";
+}
+
+.icon-huyaomoshi:before {
+  content: "\e630";
+}
+
+.icon-a-editedit:before {
+  content: "\e78c";
 }
 
 .icon-staticsfill:before {
@@ -25,7 +53,7 @@
   content: "\e7c6";
 }
 
-.icon-bags:before {
+.icon-shubao:before {
   content: "\e60a";
 }
 
@@ -33,11 +61,11 @@
   content: "\e662";
 }
 
-.icon-shoes:before {
+.icon-yumaoqiuxie:before {
   content: "\e6a0";
 }
 
-.icon-racket:before {
+.icon-yumaoqiupai:before {
   content: "\e622";
 }
 

@@ -1,0 +1,10 @@
+{
+  "dcloudAppid": "__UNI__F7DD8F8",
+  "mp-weixin": {
+    "appid": "wx5292da5f562a09ba",
+    "appsecret": "636d389a8159ddb0cba25a2a84a33b0b"
+  },
+  "tokenSecret": "badminton-archives-jwt-secret-2024",
+  "tokenExpiresIn": 259200,
+  "passwordSecret": "badminton-archives-pwd-secret-2024"
+}

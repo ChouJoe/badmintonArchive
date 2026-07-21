@@ -1,8 +1,4 @@
-/**
- * Badminton Equipment Database
- * Comprehensive brands and models for rackets, shoes, bags, and shuttles
- * Organized by type → brand → models
- */
+const CLOUD_STORAGE_BASE = 'https://env-00jy6kg7ld1o.normal.cloudstatic.cn'
 
 const brands = {
   racket: [
@@ -20,22 +16,28 @@ const brands = {
         'Nanoflare 700 Pro', 'Nanoflare 700 Tour', 'Nanoflare 700 Game', 'Nanoflare 700 Play',
         'Nanoflare 555', 'Nanoflare 380', 'Nanoflare 370 Speed',
         'Arcsaber 11 Pro', 'Arcsaber 11 Tour', 'Arcsaber 11 Play',
-        'Arcsaber 7 Pro', 'Arcsaber 7 Tour', 'Arcsaber 7 Play'
+        'Arcsaber 7 Pro', 'Arcsaber 7 Tour', 'Arcsaber 7 Play',
+        'Nanoray 900', 'Nanoray 800', 'Nanoray 700',
+        'Voltric Z-Force II', 'Voltric LD-Force', 'Voltric 80 E-Tune',
+        'Duora 10', 'Duora Z-Strike', 'Duora 77',
       ]
     },
     {
       name: 'Li-Ning',
       logo: '/static/brands/lining.svg',
       models: [
-        'Axforce 90 Max Tiger', 'Axforce 90 Max Dragon', 'Axforce 100 II', 'Axforce 80',
-        'Axforce 80 Light', 'Axforce 70', 'Axforce 50', 'Axforce 40', 'Axforce 30', 'Axforce 20',
+        'Axforce 90 Max Tiger', 'Axforce 90 Max Dragon',
+        'Axforce 100 II', 'Axforce 80', 'Axforce 80 Light',
+        'Axforce 70', 'Axforce 50', 'Axforce 40', 'Axforce 30', 'Axforce 20',
         'Axforce Cannon', 'Axforce Cannon Pro',
-        'Bladex 900 Max Sun', 'Bladex 900 Max Moon', 'Bladex 800', 'Bladex 700', 'Bladex 500',
+        'Bladex 900 Max Sun', 'Bladex 900 Max Moon',
+        'Bladex 800', 'Bladex 700', 'Bladex 500',
         'Bladex 200', 'Bladex 100',
         'Halbertec 9000', 'Halbertec 8000', 'Halbertec 7000', 'Halbertec 5000', 'Halbertec 3000', 'Halbertec 2000',
         'Aeronaut 9000', 'Aeronaut 8000', 'Aeronaut 7000',
         'Windstorm 72', 'Windstorm 79', 'Windstorm 74',
-        'Tectonic 7', 'Tectonic 9', 'Calibar 300'
+        'Tectonic 7', 'Tectonic 9', 'Calibar 300',
+        'UC 5000', 'UC 6000',
       ]
     },
     {
@@ -50,7 +52,7 @@ const brands = {
         'Thruster K Falcon', 'Thruster K 12', 'Thruster K 1H',
         'DriveX 12', 'DriveX 10 Metallic', 'DriveX 8S', 'DriveX 9X', 'DriveX 1',
         'Jetspeed S 12 II', 'Jetspeed S 12 F', 'Jetspeed S 10',
-        'Brave Sword 12', 'Brave Sword 12 Pro', 'Brave Sword LHI'
+        'Brave Sword 12', 'Brave Sword 12 Pro', 'Brave Sword LHI',
       ]
     },
     {
@@ -61,7 +63,7 @@ const brands = {
         'Master Mao 18 II', 'Master Mao 19', 'Master 800',
         'Spider 9900 II', 'Spider 9000', 'Spider 7000',
         'Lightning 8800', 'Super Light 6820',
-        'Explore 1500i', 'Corespeed 80F', 'Corespeed 70F'
+        'Explore 1500i', 'Corespeed 80F', 'Corespeed 70F',
       ]
     },
     {
@@ -70,7 +72,8 @@ const brands = {
       models: [
         'Feather K600', 'Feather K520', 'Feather K9', 'Feather K8',
         'Force T210', 'Force T110', 'TSF 300',
-        'Twister', 'B110', 'C7-PT'
+        'Twister', 'B110', 'C7-PT',
+        'TSF 100Ti', 'TSF 200', 'F9',
       ]
     },
     {
@@ -79,7 +82,7 @@ const brands = {
       models: [
         'X-Feel Blast', 'X-Feel Origin', 'X-Feel Origin Lite', 'X-Feel Power',
         'Satelite Blast', 'Satelite Gravity 74', 'Satelite Lite', 'Satelite Touch',
-        'I-Pulse Blast', 'I-Pulse Power', '6.5 Lite S'
+        'I-Pulse Blast', 'I-Pulse Power', '6.5 Lite S',
       ]
     },
     {
@@ -89,7 +92,7 @@ const brands = {
         'Kinesis Ultra', 'Kinesis X90', 'Kinesis Enhance 70', 'Kinesis Rapid',
         'Vapour Trail Pure', 'Vapour Trail Vanquish',
         'Powerblade Superlite', 'Fireblade 300',
-        'Aeroblade 6000', 'Isoblade 6.1'
+        'Aeroblade 6000', 'Isoblade 6.1',
       ]
     },
     {
@@ -100,7 +103,7 @@ const brands = {
         'Precision X1', 'Precision X3', 'Precision X5',
         'Power 999', 'Power 988', 'Power 576',
         'Light 10.1', 'Light 9.1', 'Light 6.1',
-        'N Force', 'CNT Power 1.0'
+        'N Force', 'CNT Power 1.0',
       ]
     },
     {
@@ -112,7 +115,7 @@ const brands = {
         'Z Ziggler', 'Lethal 10', 'Lethal 9',
         'Woven Aggressive', 'Woven Control',
         'Nano Fusion Speed XR', 'Nano 9900',
-        'Asgardia', 'Blend 6000', 'Dual Power Speed'
+        'Asgardia', 'Blend 6000', 'Dual Power Speed',
       ]
     },
     {
@@ -121,9 +124,114 @@ const brands = {
       models: [
         'Woven 1000 III', 'TJ Power', 'TJ Tech Racer 1',
         'Hyperion', 'Aero Mars', 'Blink Sword',
-        'High Tension 68 II', 'Professional 8000'
+        'High Tension 68 II', 'Professional 8000',
       ]
-    }
+    },
+    {
+      name: 'Bonny',
+      logo: '/static/brands/bonny.svg',
+      models: [
+        'Classic Carbon 8888AX',
+        'Classic Carbon 8888AX Ultra',
+        'Classic Carbon 8888AX III',
+        'Classic Carbon 8888AX Pro',
+        'Classic Carbon Phantom 90',
+        'Classic Carbon Phantom 100',
+        'Classic Carbon Black Tortoise',
+        'Classic Carbon White Emperor',
+        'Classic Carbon Prince',
+        'Classic Carbon Vermilion Bird',
+        'Classic Carbon 1982 B142',
+        'Thunder Speed 800 Pro',
+        'Shadow Speed 800 BP',
+        'Sword Shadow',
+        'Dragon Blade',
+        'Majun',
+        'Polaris',
+        'Warrior 672',
+        'Steel Wings J20',
+        'Light Feather FT68PP',
+        'Tiger Wings',
+        'Warrior',
+        'Cloud Roc',
+        'Aurora',
+      ]
+    },
+    {
+      name: 'RSL',
+      logo: '/static/brands/rsl.svg',
+      models: [
+        'AT70',
+        'AT70 Ultra',
+        'Extreme Cheetah',
+        'Tourney NO.1',
+        'Tourney NO.3',
+        'Tourney NO.4',
+        'Tourney NO.5',
+        'Tourney NO.6',
+        'Tourney NO.7',
+        'Tourney NO.10',
+        'Tourney 66',
+        'Ultimate',
+        'Supreme',
+        'Classic Tourney',
+        'A9',
+        'D5',
+      ]
+    },
+    {
+      name: 'DHS',
+      logo: '/static/brands/dhs.svg',
+      models: [
+        'M-Racket',
+        '101', '301', '302', '401', '402', '501', '601',
+        'Shining',
+        'Aeroplane',
+      ]
+    },
+    {
+      name: 'KUMPOO',
+      logo: '/static/brands/kumpoo.svg',
+      models: [
+        'Devil',
+        'Shura II',
+        'Xiu Luo',
+        'Leopard',
+        'Houyi Pro',
+        'K-520', 'K-510',
+        'Explorer III',
+        'Turbo 200', 'Turbo 300',
+        'Silver Fox',
+        'K-520 Pro',
+        'Chengfeng 8U',
+        'Jinsong',
+        'Shi Ri',
+        'Shi Ri II',
+        'Shi Ri III',
+        'Kuangshen',
+        'Guolun 2300',
+        'Guolun 2300 II',
+      ]
+    },
+    {
+      name: 'GOSEN',
+      logo: '/static/brands/gosen.svg',
+      models: [
+        'Inferno Smart',
+        'Inferno',
+        'Inferno Raid',
+        'Roots 5000R',
+        'Roots 6000R',
+        'Roots Aermet',
+        'Roots Xuan',
+        'Customedge Type X',
+        'Customedge Type V',
+        'Gungnir',
+        'Lotus',
+        'Ryzonic 35', 'Ryzonic 45', 'Ryzonic 55',
+        'Roots 2000R', 'Roots 3000R',
+      ]
+    },
   ],
   shoes: [
     {
@@ -135,18 +243,18 @@ const brands = {
         'Power Cushion Eclipsion Z3', 'Power Cushion Eclipsion Z2',
         'Power Cushion Comfort Z3', 'Power Cushion Comfort Z2',
         'Power Cushion 88 Dial 3', 'Power Cushion 88 Dial 2',
-        'Power Cushion Cascade Accel', 'Power Cushion SHB-50'
+        'Power Cushion Cascade Accel', 'Power Cushion SHB-50',
       ]
     },
     {
       name: 'Victor',
-      logo: '/static/brands/victor.svg',
+      logo: '/static/brands/victor.png',
       models: [
         'P9200 III', 'P9200 II', 'P9200 TTY',
         'A970 Ace', 'A960', 'A950',
         'S82 III', 'S82 II', 'S99 Elite',
         'P8500 II', 'A790', 'A780',
-        'VG2 Ace', 'AS-30'
+        'VG2 Ace', 'AS-30',
       ]
     },
     {
@@ -157,7 +265,7 @@ const brands = {
         'Ranger TD', 'Ranger IV', 'Blade Pro',
         'BladeX DF-01 Max', 'BladeSabre Max',
         'Mirage SE', 'Cloud Ace Pro', 'Cloud Ace',
-        'All-Round King', 'Yun Ting', 'Cai Fei'
+        'All-Round King', 'Yun Ting', 'Cai Fei',
       ]
     },
     {
@@ -166,7 +274,7 @@ const brands = {
       models: [
         'Wave Fang Pro', 'Wave Fang Zero 2', 'Wave Fang NX',
         'Wave Claw Neo 3', 'Wave Claw Neo 2', 'Wave Claw 3',
-        'Wave Claw 2', 'Wave Claw EL 2'
+        'Wave Claw 2', 'Wave Claw EL 2',
       ]
     },
     {
@@ -177,9 +285,9 @@ const brands = {
         'Gel-Rocket 11', 'Gel-Rocket 10',
         'Court Control FF 3', 'Court Control FF 2',
         'Blast FF', 'Upcourt 5', 'Upcourt 4',
-        'Gel-Tactic', 'Gel-Court Hunter'
+        'Gel-Tactic', 'Gel-Court Hunter',
       ]
-    }
+    },
   ],
   bag: [
     {
@@ -191,29 +299,29 @@ const brands = {
         'Expert Racquet Bag (6R)',
         'Team Racquet Bag (6R)', 'Team Backpack',
         'Active Racquet Bag (6R)', 'Club Racquet Bag',
-        'Pro Support Backpack'
-      ]
-    },
-    {
-      name: 'Li-Ning',
-      logo: '/static/brands/lining.svg',
-      models: [
-        'Professional 9R Bag', 'Professional 6R Bag',
-        'Professional Backpack', 'Standard 6R Bag',
-        'Standard 3R Bag', 'Standard Backpack',
-        'Shuttle Bag', 'Tournament Bag'
+        'Pro Support Backpack',
       ]
     },
     {
       name: 'Victor',
-      logo: '/static/brands/victor.svg',
+      logo: '/static/brands/victor.png',
+      models: [
+        'Professional 9R Bag', 'Professional 6R Bag',
+        'Professional Backpack', 'Standard 6R Bag',
+        'Standard 3R Bag', 'Standard Backpack',
+        'Shuttle Bag', 'Tournament Bag',
+      ]
+    },
+    {
+      name: 'Victor',
+      logo: '/static/brands/victor.png',
       models: [
         'Supreme Multithermobag (12R)', 'Supreme Multithermobag (9R)',
         'Flash Multithermobag (6R)', 'Supreme Backpack',
         'Flash Backpack', 'Standard 6R Bag',
-        'Standard 3R Bag', 'Standard Backpack'
+        'Standard 3R Bag', 'Standard Backpack',
       ]
-    }
+    },
   ],
   shuttle: [
     {
@@ -224,7 +332,7 @@ const brands = {
         'Aerosensa 30 (AS-30)', 'Aerosensa 20 (AS-20)',
         'Aerosensa 10 (AS-10)',
         'Aeroclub TR', 'League 7', 'Crosswind',
-        'Mavis 2000 (Nylon)', 'Mavis 370 (Nylon)', 'Mavis 200 (Nylon)'
+        'Mavis 2000 (Nylon)', 'Mavis 370 (Nylon)', 'Mavis 200 (Nylon)',
       ]
     },
     {
@@ -233,23 +341,277 @@ const brands = {
       models: [
         'A+900', 'A+700', 'A+620', 'A+600', 'A+300',
         'D80', 'D70', 'D60', 'D50',
-        'GP Gold (Nylon)'
+        'GP Gold (Nylon)',
       ]
     },
     {
       name: 'Victor',
-      logo: '/static/brands/victor.svg',
+      logo: '/static/brands/victor.png',
       models: [
         'Master Ace', 'Champion No.1', 'Champion No.3',
         'Gold No.1', 'Gold No.5', 'Silver No.3',
-        'Flight Master (Nylon)', 'NS-2000 (Nylon)'
+        'Flight Master (Nylon)', 'NS-2000 (Nylon)',
       ]
-    }
+    },
+    {
+      name: 'RSL',
+      logo: '/static/brands/rsl.svg',
+      models: [
+        'Tourney NO.1',
+        'Tourney NO.3',
+        'Tourney NO.4',
+        'Tourney NO.5',
+        'Tourney NO.6',
+        'Tourney NO.7',
+        'Tourney NO.10',
+        'Tourney 66',
+        'Ultimate',
+        'Supreme',
+        'Classic Tourney',
+        'A9',
+        'D5',
+      ]
+    },
+    {
+      name: 'DHS',
+      logo: '/static/brands/dhs.svg',
+      models: [
+        '101', '301', '302', '401', '402',
+        'Aeroplane',
+      ]
+    },
   ]
 }
 
-// ── Model Images ──
-// Maps model names to product images. Falls back to brand logo if missing.
+// ── Brand Display Names (with Chinese) ──
+const brandDisplayNames = {
+  Yonex: 'Yonex(尤尼克斯)',
+  'Li-Ning': 'Li-Ning(李宁)',
+  Victor: 'Victor(威克多)',
+  Kawasaki: 'Kawasaki(川崎)',
+  Kason: 'Kason(凯胜)',
+  Babolat: 'Babolat(百宝力)',
+  Carlton: 'Carlton(卡尔顿)',
+  'FZ Forza': 'FZ Forza',
+  Apacs: 'Apacs(阿帕斯)',
+  'Fleet/Felet': 'Fleet/Felet(富力特)',
+  Mizuno: 'Mizuno(美津浓)',
+  ASICS: 'ASICS(亚瑟士)',
+  Bonny: 'Bonny(波力)',
+  RSL: 'RSL(亚狮龙)',
+  DHS: 'DHS(红双喜)',
+  KUMPOO: 'KUMPOO(薰风)',
+  GOSEN: 'GOSEN(高神)',
+}
+
+// ── Model Display Names (with Chinese) ──
+const modelDisplayNames = {
+  Yonex: {
+    'Astrox 100ZZ': 'Astrox 100ZZ(天斧100ZZ)',
+    'Astrox 99 Pro': 'Astrox 99 Pro(天斧99Pro)',
+    'Astrox 88D Pro': 'Astrox 88D Pro(天斧88DPro)',
+    'Astrox 88S Pro': 'Astrox 88S Pro(天斧88SPro)',
+    'Astrox 77 Pro': 'Astrox 77 Pro(天斧77Pro)',
+    'Astrox 70': 'Astrox 70(天斧70)',
+    'Astrox Nextage': 'Astrox Nextage(天斧Nextage)',
+    'Nanoflare 1000Z': 'Nanoflare 1000Z(疾光1000Z)',
+    'Nanoflare 800 Pro': 'Nanoflare 800 Pro(疾光800Pro)',
+    'Nanoflare 700 Pro': 'Nanoflare 700 Pro(疾光700Pro)',
+    'Nanoflare 555': 'Nanoflare 555(疾光555)',
+    'Nanoflare 380': 'Nanoflare 380(疾光380)',
+    'Arcsaber 11 Pro': 'Arcsaber 11 Pro(弓剑11Pro)',
+    'Arcsaber 7 Pro': 'Arcsaber 7 Pro(弓剑7Pro)',
+    'Nanoray 900': 'Nanoray 900(锐速900)',
+    'Nanoray 800': 'Nanoray 800(锐速800)',
+    'Nanoray 700': 'Nanoray 700(锐速700)',
+    'Voltric Z-Force II': 'Voltric Z-Force II(VT-ZF2)',
+    'Voltric LD-Force': 'Voltric LD-Force(VT-LDF)',
+    'Duora 10': 'Duora 10(双刃10)',
+    'Duora Z-Strike': 'Duora Z-Strike(双刃ZS)',
+    'Duora 77': 'Duora 77(双刃77)',
+  },
+  'Li-Ning': {
+    'Axforce 90 Max Tiger': 'Axforce 90 Max Tiger(雷霆90Max虎)',
+    'Axforce 90 Max Dragon': 'Axforce 90 Max Dragon(雷霆90Max龙)',
+    'Axforce 100 II': 'Axforce 100 II(雷霆100二代)',
+    'Axforce 80': 'Axforce 80(雷霆80)',
+    'Axforce 80 Light': 'Axforce 80 Light(雷霆80轻量版)',
+    'Axforce 70': 'Axforce 70(雷霆70)',
+    'Axforce 50': 'Axforce 50(雷霆50)',
+    'Axforce Cannon': 'Axforce Cannon(雷霆大炮)',
+    'Axforce Cannon Pro': 'Axforce Cannon Pro(雷霆大炮Pro)',
+    'Bladex 900 Max Sun': 'Bladex 900 Max Sun(风刃900Max日)',
+    'Bladex 900 Max Moon': 'Bladex 900 Max Moon(风刃900Max月)',
+    'Bladex 800': 'Bladex 800(风刃800)',
+    'Bladex 700': 'Bladex 700(风刃700)',
+    'Halbertec 9000': 'Halbertec 9000(战戟9000)',
+    'Halbertec 8000': 'Halbertec 8000(战戟8000)',
+    'Halbertec 7000': 'Halbertec 7000(战戟7000)',
+    'Aeronaut 9000': 'Aeronaut 9000(风动9000)',
+    'Aeronaut 8000': 'Aeronaut 8000(风动8000)',
+    'Windstorm 72': 'Windstorm 72(风影72)',
+    'Windstorm 79': 'Windstorm 79(风影79)',
+    'Tectonic 7': 'Tectonic 7(突袭7)',
+    'Tectonic 9': 'Tectonic 9(突袭9)',
+    'Calibar 300': 'Calibar 300(能量300)',
+  },
+  Victor: {
+    'Auraspeed 90K Metallic': 'Auraspeed 90K Metallic(神速90K金属版)',
+    'Auraspeed 90K II': 'Auraspeed 90K II(神速90K二代)',
+    'Auraspeed 100X Ultra': 'Auraspeed 100X Ultra(神速100XUltra)',
+    'Auraspeed Fantôme': 'Auraspeed Fantôme(神速幻影)',
+    'Auraspeed 90F': 'Auraspeed 90F(神速90F)',
+    'Auraspeed 100X': 'Auraspeed 100X(神速100X)',
+    'Thruster F C Ultra X': 'Thruster F C Ultra X(黑金隼Ultra X)',
+    'Thruster F Ultra': 'Thruster F Ultra(黑金隼Ultra)',
+    'Thruster Ryuga II Pro': 'Thruster Ryuga II Pro(龙牙二代Pro)',
+    'Thruster Ryuga Metallic': 'Thruster Ryuga Metallic(龙牙金属版)',
+    'Thruster Raptor': 'Thruster Raptor(猛禽)',
+    'Thruster Merak': 'Thruster Merak(大熊座)',
+    'Thruster K Falcon': 'Thruster K Falcon(猎鹰)',
+    'DriveX 12': 'DriveX 12(驭12)',
+    'DriveX 10 Metallic': 'DriveX 10 Metallic(驭10金属版)',
+    'DriveX 8S': 'DriveX 8S(驭8S)',
+    'DriveX 9X': 'DriveX 9X(驭9X)',
+    'Jetspeed S 12 II': 'Jetspeed S 12 II(极速12二代)',
+    'Jetspeed S 12 F': 'Jetspeed S 12 F(极速12F)',
+    'Jetspeed S 10': 'Jetspeed S 10(极速10)',
+    'Brave Sword 12': 'Brave Sword 12(亮剑12)',
+    'Brave Sword 12 Pro': 'Brave Sword 12 Pro(亮剑12Pro)',
+    'Brave Sword LHI': 'Brave Sword LHI(亮剑LHI)',
+  },
+  Kawasaki: {
+    'Honor S6': 'Honor S6(荣耀S6)',
+    'Honor S5': 'Honor S5(荣耀S5)',
+    'King K9': 'King K9(王者K9)',
+    'King K8': 'King K8(王者K8)',
+    'King K7': 'King K7(王者K7)',
+    'Master Mao 18 II': 'Master Mao 18 II(大师毛18二代)',
+    'Master Mao 19': 'Master Mao 19(大师毛19)',
+    'Master 800': 'Master 800(大师800)',
+    'Spider 9900 II': 'Spider 9900 II(蜘蛛9900二代)',
+    'Spider 9000': 'Spider 9000(蜘蛛9000)',
+    'Spider 7000': 'Spider 7000(蜘蛛7000)',
+    'Lightning 8800': 'Lightning 8800(闪电8800)',
+    'Super Light 6820': 'Super Light 6820(超轻6820)',
+    'Explore 1500i': 'Explore 1500i(探索1500i)',
+    'Corespeed 80F': 'Corespeed 80F(核速80F)',
+    'Corespeed 70F': 'Corespeed 70F(核速70F)',
+  },
+  Kason: {
+    'Feather K600': 'Feather K600(风羽K600)',
+    'Feather K520': 'Feather K520(风羽K520)',
+    'Feather K9': 'Feather K9(风羽K9)',
+    'Feather K8': 'Feather K8(风羽K8)',
+    'Force T210': 'Force T210(火力T210)',
+    'Force T110': 'Force T110(火力T110)',
+    'TSF 300': 'TSF 300(汤仙虎300)',
+    'Twister': 'Twister(旋风)',
+    'TSF 100Ti': 'TSF 100Ti(汤仙虎100Ti)',
+    'TSF 200': 'TSF 200(汤仙虎200)',
+    'F9': 'F9(峰9)',
+  },
+  Bonny: {
+    'Classic Carbon 8888AX': 'Classic Carbon 8888AX(斩鬼刀)',
+    'Classic Carbon 8888AX Ultra': 'Classic Carbon 8888AX Ultra(斩鬼刀Ultra)',
+    'Classic Carbon 8888AX III': 'Classic Carbon 8888AX III(斩鬼刀III)',
+    'Classic Carbon 8888AX Pro': 'Classic Carbon 8888AX Pro(斩鬼刀Pro)',
+    'Classic Carbon Phantom 90': 'Classic Carbon Phantom 90(幻影90)',
+    'Classic Carbon Phantom 100': 'Classic Carbon Phantom 100(幻影100)',
+    'Classic Carbon Black Tortoise': 'Classic Carbon Black Tortoise(玄武)',
+    'Classic Carbon White Emperor': 'Classic Carbon White Emperor(白帝)',
+    'Classic Carbon Prince': 'Classic Carbon Prince(王子)',
+    'Classic Carbon Vermilion Bird': 'Classic Carbon Vermilion Bird(朱雀)',
+    'Classic Carbon 1982 B142': '1982 B142(波力1982)',
+    'Thunder Speed 800 Pro': 'Thunder Speed 800 Pro(雷速800Pro)',
+    'Shadow Speed 800 BP': 'Shadow Speed 800 BP(影速800BP)',
+    'Sword Shadow': 'Sword Shadow(剑影)',
+    'Dragon Blade': 'Dragon Blade(龙鳞之刃)',
+    'Majun': 'Majun(魔君)',
+    'Polaris': 'Polaris(极星)',
+    'Warrior 672': 'Warrior 672(战神672)',
+    'Steel Wings J20': 'Steel Wings J20(钢铁之翼J20)',
+    'Light Feather FT68PP': 'Light Feather FT68PP(轻羽FT68PP)',
+    'Tiger Wings': 'Tiger Wings(虎翼)',
+    'Warrior': 'Warrior(武者)',
+    'Cloud Roc': 'Cloud Roc(云鹏)',
+    'Aurora': 'Aurora(极光)',
+  },
+  RSL: {
+    'AT70': 'AT70(亚狮龙AT70)',
+    'AT70 Ultra': 'AT70 Ultra(脉冲AT70Ultra)',
+    'Extreme Cheetah': 'Extreme Cheetah(极速豹)',
+    'Tourney NO.1': 'Tourney NO.1(锦标赛1号)',
+    'Tourney NO.3': 'Tourney NO.3(锦标赛3号)',
+    'Tourney NO.4': 'Tourney NO.4(锦标赛4号)',
+    'Tourney NO.5': 'Tourney NO.5(锦标赛5号)',
+    'Tourney NO.6': 'Tourney NO.6(锦标赛6号)',
+    'Tourney NO.7': 'Tourney NO.7(锦标赛7号)',
+    'Tourney NO.10': 'Tourney NO.10(锦标赛10号)',
+    'Tourney 66': 'Tourney 66(锦标赛66)',
+    'Ultimate': 'Ultimate(终极)',
+    'Supreme': 'Supreme(至尊)',
+    'Classic Tourney': 'Classic Tourney(经典锦标赛)',
+    'A9': 'A9(A9)',
+    'D5': 'D5(D5)',
+  },
+  DHS: {
+    'M-Racket': 'M-Racket(魔拍)',
+    '101': '101',
+    '301': '301',
+    '302': '302',
+    '401': '401',
+    '402': '402',
+    '501': '501',
+    '601': '601',
+    'Shining': 'Shining(闪光)',
+    'Aeroplane': 'Aeroplane(航空)',
+  },
+  KUMPOO: {
+    'Devil': 'Devil(魔王)',
+    'Shura II': 'Shura II(修罗II)',
+    'Xiu Luo': 'Xiu Luo(修罗)',
+    'Leopard': 'Leopard(豹)',
+    'Houyi Pro': 'Houyi Pro(厚羿PRO)',
+    'Explorer III': 'Explorer III(探索者三代)',
+    'Turbo 200': 'Turbo 200(涡轮200)',
+    'Turbo 300': 'Turbo 300(涡轮300)',
+    'Silver Fox': 'Silver Fox(银狐)',
+    'K-510': 'K-510',
+    'K-520': 'K-520',
+    'K-520 Pro': 'K-520 Pro',
+    'Chengfeng 8U': 'Chengfeng 8U(乘风8U)',
+    'Jinsong': 'Jinsong(劲松)',
+    'Shi Ri': 'Shi Ri(蚀日)',
+    'Shi Ri II': 'Shi Ri II(蚀日II)',
+    'Shi Ri III': 'Shi Ri III(蚀日III)',
+    'Kuangshen': 'Kuangshen(狂蟒)',
+    'Guolun 2300': 'Guolun 2300(国伦2300)',
+    'Guolun 2300 II': 'Guolun 2300 II(国伦2300二代)',
+  },
+  GOSEN: {
+    'Inferno Smart': 'Inferno Smart(魅剑Smart)',
+    'Inferno': 'Inferno(魅剑)',
+    'Inferno Raid': 'Inferno Raid(魅剑Raid)',
+    'Roots 5000R': 'Roots 5000R(凌驾5000R)',
+    'Roots 6000R': 'Roots 6000R(凌驾6000R)',
+    'Roots Aermet': 'Roots Aermet(凌驾天龙)',
+    'Roots Xuan': 'Roots Xuan(极炫)',
+    'Customedge Type X': 'Customedge Type X(定角X型)',
+    'Customedge Type V': 'Customedge Type V(定角V型)',
+    'Gungnir': 'Gungnir(永恒之枪)',
+    'Lotus': 'Lotus(莲花)',
+    'Ryzonic 35': 'Ryzonic 35(雷音35)',
+    'Ryzonic 45': 'Ryzonic 45(雷音45)',
+    'Ryzonic 55': 'Ryzonic 55(雷音55)',
+    'Roots 2000R': 'Roots 2000R(凌驾2000R)',
+    'Roots 3000R': 'Roots 3000R(凌驾3000R)',
+  },
+  'Fleet/Felet': {
+    'Woven 1000 III': 'Woven 1000 III(woven1000三代)',
+  },
+}
+
 const modelImages = {
   Yonex: {
     'Astrox 100ZZ': '/static/models/yonex/astrox-100zz.jpg',
@@ -332,22 +694,53 @@ const modelImages = {
     'Woven 1000 III': '/static/models/fleet/woven-1000-iii.jpg',
     'TJ Power': '/static/models/fleet/tj-power.jpg',
   },
+  Bonny: {
+    'Classic Carbon 8888AX': '/static/models/bonny/8888ax.jpg',
+    'Classic Carbon Phantom 90': '/static/models/bonny/phantom-90.jpg',
+    'Classic Carbon Black Tortoise': '/static/models/bonny/black-tortoise.jpg',
+    'Steel Wings J20': '/static/models/bonny/steel-wings-j20.jpg',
+    'Light Feather FT68PP': '/static/models/bonny/ft68pp.jpg',
+  },
+  RSL: {
+    'AT70': '/static/models/rsl/at70.jpg',
+    'AT70 Ultra': '/static/models/rsl/at70-ultra.jpg',
+    'Extreme Cheetah': '/static/models/rsl/extreme-cheetah.jpg',
+    'Tourney NO.7': '/static/models/rsl/tourney-no7.jpg',
+    'Tourney NO.5': '/static/models/rsl/tourney-no5.jpg',
+    'Tourney NO.4': '/static/models/rsl/tourney-no4.jpg',
+  },
+  DHS: {
+    'M-Racket': '/static/models/dhs/m-racket.jpg',
+    '301': '/static/models/dhs/301.jpg',
+  },
+  KUMPOO: {
+    'Devil': '/static/models/kumpoo/devil.jpg',
+    'Shura II': '/static/models/kumpoo/shura-ii.jpg',
+    'Chengfeng 8U': '/static/models/kumpoo/chengfeng-8u.jpg',
+    'Jinsong': '/static/models/kumpoo/jinsong.jpg',
+    'Shi Ri II': '/static/models/kumpoo/shi-ri-ii.jpg',
+    'Kuangshen': '/static/models/kumpoo/kuangshen.jpg',
+    'Guolun 2300': '/static/models/kumpoo/guolun-2300.jpg',
+  },
+  GOSEN: {
+    'Inferno Smart': '/static/models/gosen/inferno-smart.jpg',
+    'Inferno': '/static/models/gosen/inferno.jpg',
+    'Roots 5000R': '/static/models/gosen/roots-5000r.jpg',
+    'Roots Xuan': '/static/models/gosen/roots-xuan.jpg',
+    'Gungnir': '/static/models/gosen/gungnir.jpg',
+    'Lotus': '/static/models/gosen/lotus.jpg',
+    'Ryzonic 45': '/static/models/gosen/ryzonic-45.jpg',
+  },
 }
 
 export const equipmentData = brands
 
-/**
- * Get brands list for a specific equipment type
- */
 export function getBrandsByType(type) {
   const typeData = brands[type]
   if (!typeData) return []
   return typeData.map(b => ({ name: b.name, logo: b.logo }))
 }
 
-/**
- * Get models for a specific brand under a given type
- */
 export function getModelsByBrand(type, brandName) {
   const typeData = brands[type]
   if (!typeData) return []
@@ -356,20 +749,14 @@ export function getModelsByBrand(type, brandName) {
   return brand.models
 }
 
-/**
- * Get model image URL with fallback to brand logo
- */
 export function getModelImageUrl(brandName, modelName) {
   const brandImages = modelImages[brandName]
   if (brandImages && brandImages[modelName]) {
-    return brandImages[modelName]
+    return CLOUD_STORAGE_BASE + brandImages[modelName]
   }
   return getBrandLogo(brandName)
 }
 
-/**
- * Get brand logo URL by brand name
- */
 export function getBrandLogo(brandName) {
   for (const type of Object.keys(brands)) {
     const brand = brands[type].find(b => b.name === brandName)
@@ -378,10 +765,23 @@ export function getBrandLogo(brandName) {
   return null
 }
 
+export function getBrandDisplayName(brandName) {
+  return brandDisplayNames[brandName] || brandName
+}
+
+export function getModelDisplayName(brandName, modelName) {
+  const brandModels = modelDisplayNames[brandName]
+  return (brandModels && brandModels[modelName]) || modelName
+}
+
 export const EQUIP_TYPE_ICONS = {
   racket: '\ue622',
   shoes: '\ue6a0',
   bag: '\ue60a',
-  shuttle: '\ue622',
+  shuttle: '\ue7a3',
+  socks: '\ue606',
+  waist: '\ue630',
+  knee: '\ue608',
+  ankle: '\ue650',
   other: '其他'
 }

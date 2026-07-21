@@ -1,15 +1,26 @@
 import { defineStore } from 'pinia'
-import * as storage from '@/utils/storage'
+import * as cloud from '@/utils/cloud'
+
+function mapDoc(doc) {
+  return {
+    ...doc,
+    id: doc._id,
+    equipId: doc.equipment_id,
+    stringingId: doc.stringing_id,
+    gripId: doc.grip_id
+  }
+}
 
 export const useExpenseStore = defineStore('expense', {
   state: () => ({
     list: [],
-    loaded: false
+    loaded: false,
+    loading: false,
   }),
 
   getters: {
     getByEquipId: (state) => (equipId) =>
-      state.list.filter(item => item.equipId === equipId),
+      state.list.filter(item => item.equipId === equipId || item.equipment_id === equipId),
     totalByCategory: (state) => (category) =>
       state.list
         .filter(item => item.category === category)
@@ -45,59 +56,80 @@ export const useExpenseStore = defineStore('expense', {
   },
 
   actions: {
-    load() {
-      this.list = storage.getExpenseList()
-      this.loaded = true
+    async load() {
+      if (this.loaded) return
+      this.loading = true
+      try {
+        const data = await cloud.getAll('expenses', { field: 'created_at', direction: 'desc' })
+        this.list = data.map(mapDoc)
+        this.loaded = true
+      } catch (e) {
+        console.error('Failed to load expenses:', e)
+      } finally {
+        this.loading = false
+      }
     },
 
-    migrateFromEquipment(equipList) {
+    async migrateFromEquipment(equipList) {
       let changed = false
-      equipList.forEach(equip => {
-        if (!equip.price) return
+      for (const equip of equipList) {
+        if (!equip.price) continue
         const exists = this.list.some(
           e => e.equipId === equip.id && e.category === 'equipment'
         )
         if (!exists) {
           const record = {
-            id: Date.now() + equip.id,
             date: equip.buyDate || new Date().toISOString().split('T')[0],
             amount: equip.price,
             category: 'equipment',
-            equipId: equip.id,
+            equipment_id: equip.id,
             note: `购买 ${equip.brand} ${equip.model}`
           }
-          storage.addExpense(record)
-          this.list.unshift(record)
+          const docId = await cloud.add('expenses', record)
+          this.list.unshift({ ...record, _id: docId, id: docId, equipId: equip.id })
           changed = true
         }
-      })
+      }
       return changed
     },
 
-    add(record) {
-      storage.addExpense(record)
-      this.list.unshift(record)
+    async add(record) {
+      const { id, equipId, stringingId, gripId, ...data } = record
+      const docId = await cloud.add('expenses', {
+        ...data,
+        equipment_id: equipId || data.equipment_id,
+        stringing_id: stringingId || data.stringing_id,
+        grip_id: gripId || data.grip_id,
+      })
+      this.list.unshift({
+        ...data,
+        equipment_id: equipId,
+        stringing_id: stringingId,
+        grip_id: gripId,
+        _id: docId,
+        id: docId,
+        equipId: equipId,
+        stringingId: stringingId,
+        gripId: gripId,
+      })
     },
 
-    update(id, data) {
-      storage.updateExpense(id, data)
-      const idx = this.list.findIndex(item => item.id === id)
+    async update(id, data) {
+      await cloud.update('expenses', id, data)
+      const idx = this.list.findIndex(item => item.id === id || item._id === id)
       if (idx !== -1) {
         this.list[idx] = { ...this.list[idx], ...data }
       }
     },
 
-    remove(id) {
-      storage.deleteExpense(id)
-      this.list = this.list.filter(item => item.id !== id)
+    async remove(id) {
+      await cloud.remove('expenses', id)
+      this.list = this.list.filter(item => item.id !== id && item._id !== id)
     },
 
-    removeByEquipId(equipId) {
-      const ids = this.list
-        .filter(item => item.equipId === equipId)
-        .map(item => item.id)
-      ids.forEach(id => storage.deleteExpense(id))
-      this.list = this.list.filter(item => item.equipId !== equipId)
+    async removeByEquipId(equipId) {
+      await cloud.removeByField('expenses', 'equipment_id', equipId)
+      this.list = this.list.filter(item => item.equipId !== equipId && item.equipment_id !== equipId)
     }
   }
 })

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="#1a1a2e" rx="8"/>
+  <text x="100" y="38" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="#e94560" text-anchor="middle" letter-spacing="2">GOSEN</text>
+  <text x="100" y="60" font-family="Arial, sans-serif" font-size="13" fill="#e94560" text-anchor="middle" letter-spacing="1">高神</text>
+</svg>

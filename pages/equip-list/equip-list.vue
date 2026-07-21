@@ -3,12 +3,16 @@ import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { useEquipmentStore } from '@/stores/equipment'
 import { useExpenseStore } from '@/stores/expense'
+import { useStringingStore } from '@/stores/stringing'
+import { useGripStore } from '@/stores/grip'
 import { EQUIP_TYPE_ICONS } from '@/utils/equipment-data'
 import EquipCard from '@/components/EquipCard.vue'
 import EquipEmpty from './equip-empty.vue'
 
 const store = useEquipmentStore()
 const expenseStore = useExpenseStore()
+const stringingStore = useStringingStore()
+const gripStore = useGripStore()
 
 const activeType = ref('all')
 const activeStatus = ref('inuse')
@@ -53,23 +57,18 @@ const retiredCount = computed(() => {
 
 const isEmptyList = computed(() => store.list.length === 0)
 
-function loadData() {
-  store.load()
-}
-
 function goDetail(id) {
-  uni.navigateTo({ url: `/pages/equip-detail/equip-detail?id=${id}` })
+  uni.navigateTo({ url: `/pages-equip/equip-detail/equip-detail?id=${id}` })
 }
 
 function openAddPanel() {
-  uni.navigateTo({ url: '/pages/equip-form/equip-form' })
+  uni.navigateTo({ url: '/pages-equip/equip-form/equip-form' })
 }
 
-onShow(() => {
-  loadData()
-  expenseStore.load()
+onShow(async () => {
+  await Promise.all([store.load(), expenseStore.load(), stringingStore.load(), gripStore.load()])
   if (store.list.length > 0) {
-    expenseStore.migrateFromEquipment(store.list)
+    await expenseStore.migrateFromEquipment(store.list)
   }
 })
 </script>

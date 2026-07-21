@@ -1,0 +1,51 @@
+{
+  "bsonType": "object",
+  "required": ["user_id"],
+  "permission": {
+    "read": "doc.user_id == auth.uid",
+    "create": "auth.uid != null",
+    "update": "doc.user_id == auth.uid",
+    "delete": "doc.user_id == auth.uid"
+  },
+  "properties": {
+    "_id": {
+      "description": "文档ID"
+    },
+    "user_id": {
+      "bsonType": "string",
+      "description": "所属用户ID",
+      "foreignKey": "uni-id-users._id",
+      "defaultValue": {
+        "$env": "uid"
+      }
+    },
+    "avatar": {
+      "bsonType": "string",
+      "description": "头像URL"
+    },
+    "nickname": {
+      "bsonType": "string",
+      "description": "昵称"
+    },
+    "gender": {
+      "bsonType": "string",
+      "description": "性别"
+    },
+    "level": {
+      "bsonType": "int",
+      "description": "羽毛球级别"
+    },
+    "dominantHand": {
+      "bsonType": "string",
+      "description": "持拍手: 左手/右手"
+    },
+    "created_at": {
+      "bsonType": "timestamp",
+      "description": "创建时间"
+    },
+    "updated_at": {
+      "bsonType": "timestamp",
+      "description": "更新时间"
+    }
+  }
+}

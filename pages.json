@@ -23,24 +23,31 @@
                 "navigationBarBackgroundColor": "#0f1117",
                 "navigationBarTextStyle": "white"
             }
-        },
+        }
+    ],
+    "subPackages": [
         {
-            "path": "pages/equip-form/equip-form",
-            "style": {
-                "navigationStyle": "custom",
-                "navigationBarTitleText": "",
-                "navigationBarBackgroundColor": "#0f1117",
-                "navigationBarTextStyle": "white"
-            }
-        },
-        {
-            "path": "pages/equip-detail/equip-detail",
-            "style": {
-                "navigationStyle": "custom",
-                "navigationBarTitleText": "",
-                "navigationBarBackgroundColor": "#0f1117",
-                "navigationBarTextStyle": "white"
-            }
+            "root": "pages-equip",
+            "pages": [
+                {
+                    "path": "equip-detail/equip-detail",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "",
+                        "navigationBarBackgroundColor": "#0f1117",
+                        "navigationBarTextStyle": "white"
+                    }
+                },
+                {
+                    "path": "equip-form/equip-form",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "",
+                        "navigationBarBackgroundColor": "#0f1117",
+                        "navigationBarTextStyle": "white"
+                    }
+                }
+            ]
         }
     ],
     "tabBar": {
@@ -91,6 +98,12 @@
                 "selectedIconPath": "static/icons/profile-active.png"
             }
         ]
+    },
+    "preloadRule": {
+        "pages/equip-list/equip-list": {
+            "network": "all",
+            "packages": ["pages-equip"]
+        }
     },
     "globalStyle": {
         "navigationBarTextStyle": "white",

@@ -53,16 +53,18 @@ const gripCount = computed(() => gripStore.list.length)
 const retiredCount = computed(() => equipStore.retiredList.length)
 
 function goToEquipDetail(id) {
-  uni.navigateTo({ url: `/pages/equip-detail/equip-detail?id=${id}` })
+  uni.navigateTo({ url: `/pages-equip/equip-detail/equip-detail?id=${id}` })
 }
 
-onShow(() => {
-  expenseStore.load()
-  equipStore.load()
-  stringingStore.load()
-  gripStore.load()
+onShow(async () => {
+  await Promise.all([
+    expenseStore.load(),
+    equipStore.load(),
+    stringingStore.load(),
+    gripStore.load(),
+  ])
   if (equipStore.list.length > 0) {
-    expenseStore.migrateFromEquipment(equipStore.list)
+    await expenseStore.migrateFromEquipment(equipStore.list)
   }
 })
 </script>

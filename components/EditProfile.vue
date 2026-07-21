@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { ensureSession } from '@/utils/auth'
 
 const userStore = useUserStore()
 
@@ -12,6 +13,7 @@ for (let i = 1; i <= 5; i += 0.5) {
 }
 
 const showLevelPicker = ref(false)
+const pendingFileID = ref('')
 
 const formValid = computed(() => {
   return (
@@ -44,14 +46,45 @@ function onOpen() {
     level: userStore.level || 0,
     dominantHand: userStore.dominantHand || '',
   }
+  pendingFileID.value = ''
 }
 
-function onChooseAvatar(e) {
-  editForm.value.avatar = e.detail.avatarUrl
+async function onChooseAvatar(e) {
+  const tempPath = e.detail.avatarUrl
+  try {
+    const session = await ensureSession()
+    const ext = tempPath.split('.').pop() || 'jpg'
+    const result = await uniCloud.uploadFile({
+      filePath: tempPath,
+      cloudPath: `avatars/${session.uid}_${Date.now()}.${ext}`,
+    })
+    pendingFileID.value = result.fileID
+    let previewUrl = ''
+    try {
+      const urlRes = await uniCloud.getTempFileURL({
+        fileList: [result.fileID]
+      })
+      previewUrl = urlRes.fileList?.[0]?.tempFileURL
+    } catch {}
+    if (!previewUrl || previewUrl.startsWith('cloud://')) {
+      const match = result.fileID.match(/^cloud:\/\/([^/]+)\/(.+)$/)
+      if (match) {
+        previewUrl = `https://${match[1]}.normal.cloudstatic.cn/${match[2]}`
+      }
+    }
+    editForm.value.avatar = previewUrl || ''
+  } catch (err) {
+    console.error('Avatar upload failed:', err)
+    uni.showToast({ title: '头像上传失败', icon: 'none' })
+  }
 }
 
-function save() {
-  userStore.updateProfile(editForm.value)
+async function save() {
+  const data = { ...editForm.value }
+  if (pendingFileID.value) {
+    data.avatar = pendingFileID.value
+  }
+  await userStore.updateProfile(data)
   emit('close')
   uni.showToast({ title: '已保存', icon: 'success' })
 }

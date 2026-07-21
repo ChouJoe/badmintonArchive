@@ -1,0 +1,58 @@
+{
+  "bsonType": "object",
+  "required": ["user_id", "amount", "category"],
+  "permission": {
+    "read": "doc.user_id == auth.uid",
+    "create": "auth.uid != null",
+    "update": "doc.user_id == auth.uid",
+    "delete": "doc.user_id == auth.uid"
+  },
+  "properties": {
+    "_id": {
+      "description": "文档ID"
+    },
+    "user_id": {
+      "bsonType": "string",
+      "description": "所属用户ID",
+      "foreignKey": "uni-id-users._id",
+      "defaultValue": {
+        "$env": "uid"
+      }
+    },
+    "equipment_id": {
+      "bsonType": "string",
+      "description": "关联装备ID",
+      "foreignKey": "ba-equipment._id"
+    },
+    "stringing_id": {
+      "bsonType": "string",
+      "description": "关联穿线记录ID",
+      "foreignKey": "ba-stringing._id"
+    },
+    "grip_id": {
+      "bsonType": "string",
+      "description": "关联手胶记录ID",
+      "foreignKey": "ba-grip._id"
+    },
+    "amount": {
+      "bsonType": "double",
+      "description": "金额"
+    },
+    "category": {
+      "bsonType": "string",
+      "description": "费用类型: equipment/stringing/grip"
+    },
+    "date": {
+      "bsonType": "string",
+      "description": "日期 YYYY-MM-DD"
+    },
+    "note": {
+      "bsonType": "string",
+      "description": "备注"
+    },
+    "created_at": {
+      "bsonType": "timestamp",
+      "description": "创建时间"
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "bsonType": "object",
+  "required": ["user_id", "brand", "model", "type"],
+  "permission": {
+    "read": "doc.user_id == auth.uid",
+    "create": "auth.uid != null",
+    "update": "doc.user_id == auth.uid",
+    "delete": "doc.user_id == auth.uid"
+  },
+  "properties": {
+    "_id": {
+      "description": "文档ID"
+    },
+    "user_id": {
+      "bsonType": "string",
+      "description": "所属用户ID",
+      "foreignKey": "uni-id-users._id",
+      "defaultValue": {
+        "$env": "uid"
+      }
+    },
+    "type": {
+      "bsonType": "string",
+      "description": "装备类型: racket/shoes/bag/shuttle/other",
+      "enum": ["racket", "shoes", "bag", "shuttle", "other"]
+    },
+    "brand": {
+      "bsonType": "string",
+      "description": "品牌"
+    },
+    "model": {
+      "bsonType": "string",
+      "description": "型号"
+    },
+    "price": {
+      "bsonType": "double",
+      "description": "购买价格"
+    },
+    "buyDate": {
+      "bsonType": "string",
+      "description": "购买日期 YYYY-MM-DD"
+    },
+    "rating": {
+      "bsonType": "int",
+      "description": "评分 1-10",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "retired": {
+      "bsonType": "bool",
+      "description": "是否已淘汰",
+      "defaultValue": false
+    },
+    "tag": {
+      "bsonType": "string",
+      "description": "标签"
+    },
+    "note": {
+      "bsonType": "string",
+      "description": "备注"
+    },
+    "created_at": {
+      "bsonType": "timestamp",
+      "description": "创建时间"
+    },
+    "updated_at": {
+      "bsonType": "timestamp",
+      "description": "更新时间"
+    }
+  }
+}

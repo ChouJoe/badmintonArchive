@@ -12,9 +12,11 @@ const equipmentStore = useEquipmentStore()
 const showEditPopup = ref(false)
 const showAboutPopup = ref(false)
 
-onShow(() => {
-  userStore.load()
-  equipmentStore.load()
+onShow(async () => {
+  await Promise.all([
+    userStore.load(),
+    equipmentStore.load()
+  ])
 })
 </script>
 

@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { getModelImageUrl, getBrandLogo } from '@/utils/equipment-data'
+import { computed, ref, onMounted } from 'vue'
+import { getModelImageUrl, getBrandLogo, getBrandDisplayName, getModelDisplayName } from '@/utils/equipment-data'
 import { useStringingStore } from '@/stores/stringing'
 import { useGripStore } from '@/stores/grip'
 import Rating from './Rating.vue'
@@ -12,7 +12,31 @@ const props = defineProps({
 
 const emit = defineEmits(['click'])
 
-const imgError = ref(false)
+const imgReady = ref(false)
+const loadDone = ref(false)
+const logoFailed = ref(false)
+const hasModelImage = computed(() => !!getModelImageUrl(props.item.brand, props.item.model))
+const hasBrandLogo = computed(() => !!getBrandLogo(props.item.brand))
+
+const showModel = computed(() => imgReady.value)
+const showDefaultBkg = computed(() => loadDone.value && !imgReady.value && (!hasBrandLogo.value || logoFailed.value))
+
+function onImgLoad() {
+  imgReady.value = true
+  loadDone.value = true
+}
+function onImgError() {
+  loadDone.value = true
+}
+function onLogoError() {
+  logoFailed.value = true
+}
+
+onMounted(() => {
+  if (!hasModelImage.value) {
+    loadDone.value = true
+  }
+})
 
 const stringingStore = useStringingStore()
 const gripStore = useGripStore()
@@ -27,10 +51,6 @@ const LIFESPAN_DAYS = {
 
 const STRINGING_LIFESPAN = 90
 const GRIP_LIFESPAN = 60
-
-function getCardImage(item) {
-  return getModelImageUrl(item.brand, item.model) || getBrandLogo(item.brand)
-}
 
 function getLatestByDate(records) {
   if (!records || records.length === 0) return null
@@ -56,8 +76,8 @@ const lifespanPercent = computed(() => {
 })
 
 const barColor = computed(() => {
-  if (lifespanPercent.value >= 100) return '#ef4444'
-  if (lifespanPercent.value >= 70) return '#f59e0b'
+  if (lifespanPercent.value >= 100) return '#ff000069'
+  if (lifespanPercent.value >= 70) return '#ffa400ad'
   return '#C8FF1F'
 })
 
@@ -103,17 +123,17 @@ const gripPercent = computed(() => {
 
 const stringingBarColor = computed(() => {
   if (stringingPercent.value === null) return '#C8FF1F'
-  if (stringingPercent.value >= 100) return '#ef4444'
-  if (stringingPercent.value >= 85) return '#f59e0b'
-  if (stringingPercent.value >= 70) return '#f59e0b'
+  if (stringingPercent.value >= 100) return '#ff000069'
+  if (stringingPercent.value >= 85) return '#ffa400ad'
+  if (stringingPercent.value >= 70) return '#ffa400ad'
   return '#C8FF1F'
 })
 
 const gripBarColor = computed(() => {
   if (gripPercent.value === null) return '#C8FF1F'
-  if (gripPercent.value >= 100) return '#ef4444'
-  if (gripPercent.value >= 85) return '#f59e0b'
-  if (gripPercent.value >= 70) return '#f59e0b'
+  if (gripPercent.value >= 100) return '#ff000069'
+  if (gripPercent.value >= 85) return '#ffa400ad'
+  if (gripPercent.value >= 70) return '#ffa400ad'
   return '#C8FF1F'
 })
 
@@ -125,17 +145,30 @@ function onClick() {
 <template>
   <view class="card" @tap="onClick">
     <image
+      v-if="showModel"
       class="card-bg"
-      :src="getCardImage(item)"
+      :src="getModelImageUrl(item.brand, item.model)"
       mode="aspectFill"
-      @error="imgError = true"
     />
-    <view v-if="!imgError" class="card-overlay"></view>
-    <view v-else class="card-bg-fallback"></view>
+    <image
+      v-else-if="hasBrandLogo && !showDefaultBkg"
+      class="card-bg"
+      :src="getBrandLogo(item.brand)"
+      mode="aspectFit"
+      @error="onLogoError"
+    />
+    <image
+      v-if="hasModelImage && !loadDone"
+      class="card-bg-preload"
+      :src="getModelImageUrl(item.brand, item.model)"
+      @load="onImgLoad"
+      @error="onImgError"
+    />
+    <view class="card-overlay" :class="{ 'card-overlay-default': showDefaultBkg }"></view>
     <view class="card-content">
       <view class="card-top">
         <view class="card-info">
-          <text class="card-name">{{ item.brand }}</text>
+          <text class="card-name">{{ getBrandDisplayName(item.brand) }}</text>
         </view>
         <view class="card-type-badge">
           <uni-icons fontFamily="iconfont" :size="26" color="#ffffff87" >{{typeLabels[item.type]}}</uni-icons>
@@ -182,7 +215,7 @@ function onClick() {
 
       <view class="card-bottom">
 		  <view class="card-bottom-left">
-			  <text class="card-model" v-if="item.model">{{ item.model }}</text>
+			  <text class="card-model" v-if="item.model">{{ getModelDisplayName(item.brand, item.model) }}</text>
 			  <Rating :model-value="item.rating" readonly/>
 		  </view>
 		  <view class="card-bottom-right">
@@ -211,6 +244,14 @@ function onClick() {
   width: 100%;
   height: 100%;
 }
+.card-bg-preload {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
 .card-overlay {
   position: absolute;
   top: 0;
@@ -219,13 +260,32 @@ function onClick() {
   height: 100%;
   background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);
 }
-.card-bg-fallback {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #1e2430;
+.card-overlay-default {
+   background:
+      /* Layer 3: 文字遮罩线性渐变 (顶层) */
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.55) 0%,
+        rgba(0, 0, 0, 0.05) 40%,
+        rgba(0, 0, 0, 0) 55%,
+        rgba(0, 0, 0, 0.72) 80%,
+        rgba(0, 0, 0, 0.88) 100%
+      ),
+      /* Layer 2: 左侧暖绿径向渐变 */
+      radial-gradient(
+        circle at 35% 60%,
+        rgba(64, 97, 56, 0.35) 0%,
+        rgba(38, 64, 38, 0) 100%
+      ),
+      /* Layer 1: 右上亮光径向渐变 */
+      radial-gradient(
+        circle at 75% 20%,
+        rgba(51, 107, 82, 0.7) 0%,
+        rgba(36, 71, 56, 0.28) 60%,
+        rgba(26, 46, 36, 0) 100%
+      ),
+      /* Layer 0: 纯色底色 */
+      #1F382E;
 }
 .card-content {
   position: relative;
