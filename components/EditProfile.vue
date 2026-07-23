@@ -438,7 +438,8 @@ function selectLevel(level) {
   border: none;
 }
 .save-btn[disabled] {
-  opacity: 0.4;
+  opacity: 1;
+  background: #3a3f4a;
 }
 .save-btn-text {
   font-size: 30rpx;

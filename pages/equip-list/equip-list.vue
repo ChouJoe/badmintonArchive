@@ -143,11 +143,11 @@ onShow(async () => {
     <EquipEmpty v-if="isEmptyList" @add="openAddPanel" />
 
     <view v-else class="list-section">
-      <view v-if="filteredList.length === 0" class="empty-filter">
+      <view v-show="filteredList.length === 0" class="empty-filter">
         <text class="empty-filter-text">没有匹配的装备</text>
       </view>
 
-      <view v-else class="list">
+      <view v-show="filteredList.length > 0" class="list">
         <EquipCard
           v-for="item in filteredList"
           :key="item.id"

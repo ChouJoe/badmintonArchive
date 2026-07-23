@@ -228,6 +228,11 @@ function handleDelete() {
 
 const editStringingId = ref(null)
 
+function cancelStringingForm() {
+  showStringingForm.value = false
+  editStringingId.value = null
+}
+
 function toggleStringingForm() {
   if (!userStore.isVIP && stringingStore.list.length >= FREE_STRINGING_LIMIT) {
     uni.showModal({
@@ -326,6 +331,11 @@ async function saveStringing() {
 
   editStringingId.value = null
   showStringingForm.value = false
+}
+
+function cancelGripForm() {
+  showGripForm.value = false
+  editGripId.value = null
 }
 
 function toggleGripForm() {
@@ -656,7 +666,7 @@ function onStringingFormInput(field, e) {
             />
           </view>
           <view class="form-actions">
-            <view class="form-btn form-btn-cancel" @tap="toggleStringingForm">
+            <view class="form-btn form-btn-cancel" @tap="cancelStringingForm">
               <text class="form-btn-text">取消</text>
             </view>
             <view class="form-btn form-btn-save" @tap="saveStringing">
@@ -765,7 +775,7 @@ function onStringingFormInput(field, e) {
             />
           </view>
           <view class="form-actions">
-            <view class="form-btn form-btn-cancel" @tap="toggleGripForm">
+            <view class="form-btn form-btn-cancel" @tap="cancelGripForm">
               <text class="form-btn-text">取消</text>
             </view>
             <view class="form-btn form-btn-save" @tap="saveGrip">

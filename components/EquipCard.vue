@@ -357,10 +357,12 @@ function onClick() {
   display: flex;
   flex-direction: column;
   gap: 20rpx;
+  min-width: 0;
 }
 .card-bottom-right{
 	display: flex;
 	align-items: end;
+	flex-shrink: 0;
 }
 .card-model{
   font-size: 1rem;
@@ -374,6 +376,8 @@ function onClick() {
   background: rgba(74, 222, 128, 0.15);
   padding: 4rpx 18rpx;
   border-radius: 20rpx;
+  white-space: nowrap;
+  text-align: center;
 }
 .card-status.retired {
   color: #ef4444;
