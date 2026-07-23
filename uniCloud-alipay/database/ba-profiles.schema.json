@@ -46,6 +46,15 @@
     "updated_at": {
       "bsonType": "timestamp",
       "description": "更新时间"
+    },
+    "vip": {
+      "bsonType": "bool",
+      "description": "是否已付费购买完整版",
+      "defaultValue": false
+    },
+    "vip_activated_at": {
+      "bsonType": "timestamp",
+      "description": "VIP 激活时间"
     }
   }
 }

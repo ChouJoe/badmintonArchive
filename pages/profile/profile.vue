@@ -12,12 +12,22 @@ const equipmentStore = useEquipmentStore()
 const showEditPopup = ref(false)
 const showAboutPopup = ref(false)
 
-onShow(async () => {
+  onShow(async () => {
   await Promise.all([
     userStore.load(),
     equipmentStore.load()
   ])
 })
+
+function copyUserId() {
+  if (!userStore.userId) return
+  uni.setClipboardData({
+    data: userStore.userId,
+    success: () => {
+      uni.showToast({ title: '已复制用户 ID', icon: 'success' })
+    }
+  })
+}
 </script>
 
 <template>
@@ -51,6 +61,36 @@ onShow(async () => {
         <view class="info-row">
           <text class="info-key">持拍手</text>
           <text class="info-value">{{ userStore.dominantHand || '未设置' }}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 用户 ID -->
+    <view class="section">
+      <text class="section-label">用户 ID</text>
+      <view class="info-card">
+        <view class="info-row">
+          <text class="info-key uid-text">{{ userStore.userId || '加载中...' }}</text>
+          <text v-if="userStore.userId" class="uid-copy" @tap="copyUserId">复制</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 完整版 -->
+    <view class="section">
+      <text class="section-label">完整版</text>
+      <view class="info-card">
+        <view class="info-row info-row-tap" @tap="uni.navigateTo({ url: '/pages/profile/vip' })">
+          <text class="info-key">
+            <text class="vip-indicator" :class="{ active: userStore.isVIP }">
+              {{ userStore.isVIP ? '✓' : '✗' }}
+            </text>
+            {{ userStore.isVIP ? '已激活完整版' : '升级完整版' }}
+          </text>
+          <view class="info-right">
+            <text v-if="!userStore.isVIP" class="vip-price">¥4.99</text>
+            <text class="info-arrow">›</text>
+          </view>
         </view>
       </view>
     </view>
@@ -163,5 +203,44 @@ onShow(async () => {
 .info-arrow {
   font-size: 32rpx;
   color: #6b7280;
+}
+.info-right {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+.vip-price {
+  font-size: 26rpx;
+  color: #C8FF1F;
+  font-weight: 700;
+}
+.vip-indicator {
+  font-size: 20rpx;
+  margin-right: 8rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  background: rgba(107, 114, 128, 0.2);
+  color: #6b7280;
+}
+.vip-indicator.active {
+  background: rgba(200, 255, 31, 0.15);
+  color: #C8FF1F;
+}
+
+.uid-text {
+  font-size: 24rpx;
+  color: #e5e5e7;
+  font-family: monospace;
+  letter-spacing: 1rpx;
+}
+.uid-copy {
+  font-size: 24rpx;
+  color: #C8FF1F;
+  padding: 8rpx 24rpx;
+  border: 1rpx solid #C8FF1F;
+  border-radius: 8rpx;
+}
+.uid-copy:active {
+  background: rgba(200, 255, 31, 0.1);
 }
 </style>

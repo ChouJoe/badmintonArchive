@@ -23,6 +23,15 @@
                 "navigationBarBackgroundColor": "#0f1117",
                 "navigationBarTextStyle": "white"
             }
+        },
+        {
+            "path": "pages/profile/vip",
+            "style": {
+                "navigationStyle": "custom",
+                "navigationBarTitleText": "",
+                "navigationBarBackgroundColor": "#0f1117",
+                "navigationBarTextStyle": "white"
+            }
         }
     ],
     "subPackages": [

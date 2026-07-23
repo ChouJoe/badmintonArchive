@@ -1,11 +1,13 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
+import { useUserStore } from '@/stores/user'
 import { useExpenseStore } from '@/stores/expense'
 import { useEquipmentStore } from '@/stores/equipment'
 import { useStringingStore } from '@/stores/stringing'
 import { useGripStore } from '@/stores/grip'
 
+const userStore = useUserStore()
 const expenseStore = useExpenseStore()
 const equipStore = useEquipmentStore()
 const stringingStore = useStringingStore()
@@ -58,6 +60,7 @@ function goToEquipDetail(id) {
 
 onShow(async () => {
   await Promise.all([
+    userStore.load(),
     expenseStore.load(),
     equipStore.load(),
     stringingStore.load(),
@@ -76,8 +79,15 @@ onShow(async () => {
     </view>
 
     <scroll-view scroll-y class="page-body">
+      <view v-if="!userStore.isVIP" class="vip-lock" @tap="uni.navigateTo({ url: '/pages/profile/vip' })">
+        <text class="vip-lock-icon">🔒</text>
+        <text class="vip-lock-title">完整版功能</text>
+        <text class="vip-lock-desc">升级完整版即可查看消费统计、寿命进度等数据</text>
+        <text class="vip-lock-btn">查看升级方案</text>
+      </view>
+
       <!-- Summary Cards -->
-      <view class="summary-grid">
+      <view class="summary-grid" v-if="userStore.isVIP">
         <view class="summary-card total">
           <text class="summary-label">总支出</text>
           <text class="summary-value">¥{{ totalAll }}</text>
@@ -92,6 +102,7 @@ onShow(async () => {
         </view>
       </view>
 
+      <template v-if="userStore.isVIP">
       <!-- Quick Stats -->
       <view class="quick-stats">
         <view class="quick-stat-item">
@@ -177,11 +188,49 @@ onShow(async () => {
       </view>
 
       <view class="bottom-spacer"></view>
+      </template>
     </scroll-view>
   </view>
 </template>
 
 <style scoped>
+.vip-lock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 40rpx;
+  background: #1a1d27;
+  border-radius: 20rpx;
+  margin-bottom: 24rpx;
+}
+.vip-lock:active {
+  background: #1e2430;
+}
+.vip-lock-icon {
+  font-size: 60rpx;
+  margin-bottom: 20rpx;
+}
+.vip-lock-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12rpx;
+}
+.vip-lock-desc {
+  font-size: 24rpx;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 24rpx;
+  line-height: 1.5;
+}
+.vip-lock-btn {
+  font-size: 26rpx;
+  color: #C8FF1F;
+  font-weight: 600;
+  padding: 16rpx 48rpx;
+  border: 1rpx solid #C8FF1F;
+  border-radius: 40rpx;
+}
 .page {
   min-height: 100vh;
   background-color: #0f1117;

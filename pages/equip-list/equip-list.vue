@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
+import { useUserStore, FREE_EQUIP_LIMIT } from '@/stores/user'
 import { useEquipmentStore } from '@/stores/equipment'
 import { useExpenseStore } from '@/stores/expense'
 import { useStringingStore } from '@/stores/stringing'
@@ -9,6 +10,7 @@ import { EQUIP_TYPE_ICONS } from '@/utils/equipment-data'
 import EquipCard from '@/components/EquipCard.vue'
 import EquipEmpty from './equip-empty.vue'
 
+const userStore = useUserStore()
 const store = useEquipmentStore()
 const expenseStore = useExpenseStore()
 const stringingStore = useStringingStore()
@@ -62,11 +64,25 @@ function goDetail(id) {
 }
 
 function openAddPanel() {
+  if (!userStore.vip && store.list.length >= FREE_EQUIP_LIMIT) {
+    uni.showModal({
+      title: '已达免费限制',
+      content: `免费用户最多添加 ${FREE_EQUIP_LIMIT} 件装备。升级完整版即可解除限制。`,
+      showCancel: false,
+      confirmText: '前往订阅',
+      success: (res) => {
+        if (res.confirm) {
+          uni.navigateTo({ url: '/pages/profile/vip' })
+        }
+      }
+    })
+    return
+  }
   uni.navigateTo({ url: '/pages-equip/equip-form/equip-form' })
 }
 
 onShow(async () => {
-  await Promise.all([store.load(), expenseStore.load(), stringingStore.load(), gripStore.load()])
+  await Promise.all([userStore.load(), store.load(), expenseStore.load(), stringingStore.load(), gripStore.load()])
   if (store.list.length > 0) {
     await expenseStore.migrateFromEquipment(store.list)
   }
@@ -117,6 +133,11 @@ onShow(async () => {
           <text class="status-tab-text">已淘汰 ({{ retiredCount }})</text>
         </view>
       </view>
+    </view>
+
+    <view v-if="!isEmptyList && !userStore.isVIP" class="vip-banner" @tap="uni.navigateTo({ url: '/pages/profile/vip' })">
+      <text class="vip-banner-text">免费用户仅限添加 2 件装备 · 点击升级完整版</text>
+      <text class="vip-banner-arrow">›</text>
     </view>
 
     <EquipEmpty v-if="isEmptyList" @add="openAddPanel" />
@@ -282,6 +303,30 @@ onShow(async () => {
 .empty-filter-text {
   font-size: 26rpx;
   color: #5c5c6e;
+}
+
+/* VIP Banner */
+.vip-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16rpx 30rpx 0;
+  padding: 16rpx 24rpx;
+  background: rgba(200, 255, 31, 0.08);
+  border: 1rpx solid rgba(200, 255, 31, 0.2);
+  border-radius: 16rpx;
+}
+.vip-banner:active {
+  background: rgba(200, 255, 31, 0.12);
+}
+.vip-banner-text {
+  font-size: 22rpx;
+  color: #C8FF1F;
+}
+.vip-banner-arrow {
+  font-size: 28rpx;
+  color: #C8FF1F;
+  margin-left: 12rpx;
 }
 
 /* List Section */

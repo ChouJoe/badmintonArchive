@@ -1,7 +1,12 @@
 import { defineStore } from 'pinia'
 import * as cloud from '@/utils/cloud'
+import { getSessionSync } from '@/utils/auth'
 
 const LOCAL_KEY = 'userProfile'
+
+export const FREE_EQUIP_LIMIT = 2
+export const FREE_STRINGING_LIMIT = 1
+export const FREE_GRIP_LIMIT = 1
 
 async function resolveAvatarUrl(avatar) {
   if (avatar && avatar.startsWith('cloud://')) {
@@ -27,16 +32,19 @@ async function resolveAvatarUrl(avatar) {
 
 export const useUserStore = defineStore('user', {
   state: () => ({
+    userId: '',
     avatar: '',
     avatarFileID: '',
     nickname: '',
     gender: '',
     level: 0,
     dominantHand: '',
+    vip: false,
     loaded: false,
   }),
 
   getters: {
+    isVIP: (state) => state.vip === true,
     profileDoc: (state) => ({
       avatar: state.avatarFileID || state.avatar,
       nickname: state.nickname,
@@ -48,8 +56,10 @@ export const useUserStore = defineStore('user', {
 
   actions: {
     async load() {
+      this._setUserIdFromSession()
       try {
         const profiles = await cloud.getAll('profile')
+        this._setUserIdFromSession()
         if (profiles.length > 0) {
           const p = profiles[0]
           this.avatarFileID = p.avatar && p.avatar.startsWith('cloud://') ? p.avatar : ''
@@ -58,6 +68,7 @@ export const useUserStore = defineStore('user', {
           this.gender = p.gender || ''
           this.level = p.level || 0
           this.dominantHand = p.dominantHand || ''
+          this.vip = p.vip || false
         } else {
           const local = this._loadLocal()
           if (local) Object.assign(this, local)
@@ -71,6 +82,14 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    _setUserIdFromSession() {
+      if (this.userId) return
+      const session = getSessionSync()
+      if (session?.uid) {
+        this.userId = session.uid
+      }
+    },
+
     async save() {
       try {
         const profiles = await cloud.getAll('profile')
@@ -80,6 +99,7 @@ export const useUserStore = defineStore('user', {
           gender: this.gender,
           level: this.level,
           dominantHand: this.dominantHand,
+          vip: this.vip,
           updated_at: Date.now()
         }
         if (profiles.length > 0) {
@@ -122,11 +142,13 @@ export const useUserStore = defineStore('user', {
 
     _saveLocal() {
       uni.setStorageSync(LOCAL_KEY, {
+        userId: this.userId,
         avatar: this.avatar,
         nickname: this.nickname,
         gender: this.gender,
         level: this.level,
         dominantHand: this.dominantHand,
+        vip: this.vip,
       })
     }
   }

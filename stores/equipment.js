@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import * as cloud from '@/utils/cloud'
+import { useUserStore, FREE_EQUIP_LIMIT } from './user'
 
 function mapDoc(doc) {
   return { ...doc, id: doc._id }
@@ -35,6 +36,21 @@ export const useEquipmentStore = defineStore('equipment', {
     },
 
     async add(item) {
+      if (!this.loaded) await this.load()
+      const userStore = useUserStore()
+      if (!userStore.isVIP && this.list.length >= FREE_EQUIP_LIMIT) {
+        uni.showModal({
+          title: '已达免费限制',
+          content: `免费用户最多添加 ${FREE_EQUIP_LIMIT} 件装备。升级完整版即可解除限制。`,
+          showCancel: false,
+          success: (res) => {
+            if (res.confirm) {
+              uni.navigateTo({ url: '/pages/profile/vip' })
+            }
+          }
+        })
+        return
+      }
       const { id, ...data } = item
       const docId = await cloud.add('equipment', data)
       this.list.unshift({ ...data, _id: docId, id: docId })

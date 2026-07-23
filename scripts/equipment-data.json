@@ -23,7 +23,48 @@
             "Astrox 77 Tour",
             "Astrox 77 Play",
             "Astrox 66",
-            "Astrox 7 DG"
+            "Astrox 7 DG",
+            "ASTROX 11",
+            "ASTROX POWER",
+            "Arcsaber 11",
+            "Astrox 007",
+            "Astrox 007YONEX",
+            "Astrox 10",
+            "Astrox 100",
+            "Astrox 100TOUR",
+            "Astrox 100ZZ",
+            "Astrox 10AX10",
+            "Astrox 10YONEX",
+            "Astrox 77pro4U",
+            "Astrox ASTROX",
+            "Astrox ASTROX100ZZ",
+            "Astrox AX10",
+            "Astrox AX100",
+            "Astrox AX100TOUR",
+            "Astrox AX100ZZ",
+            "Astrox AX11pYONEX",
+            "Astrox AX88DPRO",
+            "Astrox AX88PLAY",
+            "Astrox AX88SPRO",
+            "Astrox AX99PLAY",
+            "Astrox AXNT",
+            "NANOFLARE 700",
+            "Nanoflare 1000PLAY",
+            "Nanoflare 1000tour",
+            "Nanoflare 700PRO",
+            "Nanoflare 700TOUR",
+            "Nanoflare 800",
+            "Nanoflare 8S",
+            "Nanoflare AXNT",
+            "Nanoflare NEX",
+            "Nanoflare NF-1000ZZTOUR",
+            "Nanoflare NF-NTEX",
+            "Nanoflare NF700",
+            "Nanoflare NF8S",
+            "Nanoflare NFNTEXAGE",
+            "Nanoflare nextage",
+            "Nanoflare nfnt",
+            "Voltric VTPW"
           ]
         },
         "Nanoflare": {
@@ -84,7 +125,18 @@
             "Axforce 80 II",
             "Axforce 70",
             "Axforce 60",
-            "Axforce 50"
+            "Axforce 50",
+            "Aeronaut 9000i",
+            "Axforce 08",
+            "Axforce 80Light",
+            "Axforce 90new",
+            "Axforce AXFORCE",
+            "Axforce CANNON",
+            "Bladex 500pro",
+            "Halbertec 1000",
+            "Halbertec 2000",
+            "Halbertec 9000POWER",
+            "Halbertec Power"
           ]
         },
         "Bladex": {
@@ -153,7 +205,32 @@
             "Thruster K Falcon",
             "Thruster K 9900",
             "Thruster TK-F Claw",
-            "Thruster TK-100"
+            "Thruster TK-100",
+            "Auraspeed ARS-50",
+            "Jetspeed 10",
+            "TK- 30",
+            "TK- CLS",
+            "TK- HAWK",
+            "TK- MUSE",
+            "TK- Onigiri",
+            "TK- RAPTOR",
+            "TK- RYUGA",
+            "TK-RYUGA CLS",
+            "TK-RYUGA MUSE",
+            "Thruster 12L",
+            "Thruster K Falcon HAWK",
+            "Thruster K Falcon PRO",
+            "Thruster Ryuga 5U",
+            "Thruster Ryuga BXR",
+            "Thruster Ryuga CLS",
+            "Thruster Ryuga IITD",
+            "Thruster Ryuga MUSE",
+            "Thruster Ryuga PRO",
+            "Thruster Ryuga SPORT",
+            "Thruster Ryuga TK-HAWK",
+            "Thruster Ryuga TK-HWQL",
+            "Thruster Ryuga TK-RYUGA",
+            "Thruster Ryuga pro"
           ]
         },
         "Auraspeed": {
@@ -211,7 +288,18 @@
           "models": [
             "Honor S9",
             "Honor S8",
-            "Honor S6"
+            "Honor S6",
+            "Super Light 18-32",
+            "Super Light 18-32LBS",
+            "Super Light 35",
+            "Super Light 4U",
+            "Super Light 4U5U",
+            "Super Light 5U",
+            "Super Light 60",
+            "Super Light 60s",
+            "Super Light H26U",
+            "Super Light LBS",
+            "Super Light q5"
           ]
         },
         "Passion": {
@@ -245,7 +333,20 @@
           "models": [
             "Feather K600",
             "Feather K520",
-            "Feather K510"
+            "Feather K510",
+            "TSF 100TI",
+            "TSF 105ti",
+            "TSF 300Ti",
+            "TSF 300a",
+            "TSF 300d",
+            "TSF 98",
+            "TSF KASON",
+            "TSF TSF",
+            "TSF TSF100T105TI",
+            "TSF TSF100Ti",
+            "TSF TSF105TI",
+            "TSF TSF105Ti",
+            "TSF TSF300TI"
           ]
         },
         "Force": {
@@ -310,7 +411,8 @@
             "Babolat Satelite Gravity 74",
             "Babolat Satelite Gravity 78",
             "Babolat Satelite Touch",
-            "Babolat Satelite Lite"
+            "Babolat Satelite Lite",
+            "Babolat PS100"
           ]
         }
       }
@@ -328,7 +430,8 @@
             "Carlton Aeroblade 600",
             "Carlton Fireblade 300",
             "Carlton Isoblade 6.0",
-            "Carlton Solar 800"
+            "Carlton Solar 800",
+            "Carlton K198"
           ]
         }
       }

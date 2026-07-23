@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import * as cloud from '@/utils/cloud'
+import { useUserStore, FREE_STRINGING_LIMIT } from './user'
 
 function mapDoc(doc) {
   return { ...doc, id: doc._id, equipId: doc.equipment_id }
@@ -39,6 +40,21 @@ export const useStringingStore = defineStore('stringing', {
     },
 
     async add(record) {
+      if (!this.loaded) await this.load()
+      const userStore = useUserStore()
+      if (!userStore.isVIP && this.list.length >= FREE_STRINGING_LIMIT) {
+        uni.showModal({
+          title: '已达免费限制',
+          content: `免费用户最多添加 ${FREE_STRINGING_LIMIT} 条穿线记录。升级完整版即可解除限制。`,
+          showCancel: false,
+          success: (res) => {
+            if (res.confirm) {
+              uni.navigateTo({ url: '/pages/profile/vip' })
+            }
+          }
+        })
+        return
+      }
       const { id, equipId, ...data } = record
       const docId = await cloud.add('stringing', { ...data, equipment_id: equipId || data.equipment_id })
       this.list.unshift({ ...data, equipment_id: equipId, _id: docId, id: docId, equipId: equipId })

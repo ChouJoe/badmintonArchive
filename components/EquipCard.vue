@@ -3,6 +3,7 @@ import { computed, ref, onMounted } from 'vue'
 import { getModelImageUrl, getBrandLogo, getBrandDisplayName, getModelDisplayName } from '@/utils/equipment-data'
 import { useStringingStore } from '@/stores/stringing'
 import { useGripStore } from '@/stores/grip'
+import { useUserStore } from '@/stores/user'
 import Rating from './Rating.vue'
 
 const props = defineProps({
@@ -38,6 +39,7 @@ onMounted(() => {
   }
 })
 
+const userStore = useUserStore()
 const stringingStore = useStringingStore()
 const gripStore = useGripStore()
 
@@ -176,7 +178,7 @@ function onClick() {
         <text class="card-usage-label">已使用</text>
         <text class="card-usage-value">{{ daysInUse !== null ? `${daysInUse} 天` : '—' }}</text>
       </view>
-      <view class="lifespan-bar-wrap" v-if="daysInUse !== null">
+      <view class="lifespan-bar-wrap" v-if="daysInUse !== null && userStore.isVIP">
         <text class="lifespan-bar-label">{{ item.type === 'racket' ? '球拍' : '装备' }}</text>
         <view class="lifespan-bar-bg">
           <view
@@ -187,7 +189,7 @@ function onClick() {
         <text class="lifespan-bar-text">{{ lifespanPercent }}%</text>
       </view>
 
-      <view class="lifespan-bar-wrap" v-if="stringingPercent !== null">
+      <view class="lifespan-bar-wrap" v-if="stringingPercent !== null && userStore.isVIP">
         <text class="lifespan-bar-label">球线</text>
         <view class="lifespan-bar-bg">
           <view
@@ -196,10 +198,9 @@ function onClick() {
           ></view>
         </view>
         <text class="lifespan-bar-text">{{ stringingPercent }}%</text>
-        <text v-if="stringingPercent >= 85" class="lifespan-bar-warn">⚠</text>
       </view>
 
-      <view class="lifespan-bar-wrap" v-if="gripPercent !== null">
+      <view class="lifespan-bar-wrap" v-if="gripPercent !== null && userStore.isVIP">
         <text class="lifespan-bar-label">手胶</text>
         <view class="lifespan-bar-bg">
           <view
@@ -208,7 +209,6 @@ function onClick() {
           ></view>
         </view>
         <text class="lifespan-bar-text">{{ gripPercent }}%</text>
-        <text v-if="gripPercent >= 85" class="lifespan-bar-warn">⚠</text>
       </view>
 
       <view class="card-bottom">
@@ -400,7 +400,7 @@ function onClick() {
 .lifespan-bar-text {
   font-size: 20rpx;
   color: rgba(255,255,255,0.5);
-  width: 48rpx;
+  width: 72rpx;
   text-align: right;
   flex-shrink: 0;
 }
@@ -408,10 +408,6 @@ function onClick() {
   font-size: 18rpx;
   color: rgba(255,255,255,0.4);
   width: 40rpx;
-  flex-shrink: 0;
-}
-.lifespan-bar-warn {
-  font-size: 20rpx;
   flex-shrink: 0;
 }
 </style>

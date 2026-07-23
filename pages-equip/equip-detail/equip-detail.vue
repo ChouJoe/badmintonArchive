@@ -1,12 +1,14 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
+import { useUserStore, FREE_STRINGING_LIMIT, FREE_GRIP_LIMIT } from '@/stores/user'
 import { useEquipmentStore } from '@/stores/equipment'
 import { useStringingStore } from '@/stores/stringing'
 import { useGripStore } from '@/stores/grip'
 import { useExpenseStore } from '@/stores/expense'
 import { getModelImageUrl, getBrandLogo, getBrandDisplayName, getModelDisplayName, EQUIP_TYPE_ICONS } from '@/utils/equipment-data'
 
+const userStore = useUserStore()
 const store = useEquipmentStore()
 const stringingStore = useStringingStore()
 const gripStore = useGripStore()
@@ -52,6 +54,7 @@ onLoad(async (query) => {
     equipId.value = query.id
   }
   await Promise.all([
+    userStore.load(),
     store.load(),
     stringingStore.load(),
     gripStore.load(),
@@ -226,6 +229,17 @@ function handleDelete() {
 const editStringingId = ref(null)
 
 function toggleStringingForm() {
+  if (!userStore.isVIP && stringingStore.list.length >= FREE_STRINGING_LIMIT) {
+    uni.showModal({
+      title: '已达免费限制',
+      content: `免费用户最多添加 ${FREE_STRINGING_LIMIT} 条穿线记录。升级完整版即可解除限制。`,
+      showCancel: false,
+      success: (res) => {
+        if (res.confirm) uni.navigateTo({ url: '/pages/profile/vip' })
+      }
+    })
+    return
+  }
   showStringingForm.value = !showStringingForm.value
   editStringingId.value = null
   if (showStringingForm.value) {
@@ -315,6 +329,17 @@ async function saveStringing() {
 }
 
 function toggleGripForm() {
+  if (!userStore.isVIP && gripStore.list.length >= FREE_GRIP_LIMIT) {
+    uni.showModal({
+      title: '已达免费限制',
+      content: `免费用户最多添加 ${FREE_GRIP_LIMIT} 条手胶更换记录。升级完整版即可解除限制。`,
+      showCancel: false,
+      success: (res) => {
+        if (res.confirm) uni.navigateTo({ url: '/pages/profile/vip' })
+      }
+    })
+    return
+  }
   showGripForm.value = !showGripForm.value
   editGripId.value = null
   if (showGripForm.value) {
@@ -488,7 +513,7 @@ function onStringingFormInput(field, e) {
           <text class="stat-value">{{ gripCount }}</text>
           <text class="stat-label">更换手胶</text>
         </view>
-        <view class="stat-item">
+        <view v-if="userStore.isVIP" class="stat-item">
           <text class="stat-value">¥{{ totalSpent }}</text>
           <text class="stat-label">总花费</text>
         </view>
@@ -534,7 +559,7 @@ function onStringingFormInput(field, e) {
         <view class="section-header">
           <text class="section-title">穿线记录 ({{ stringingCount }})</text>
           <view class="section-header-actions">
-            <view v-if="!showStringingForm" class="add-stringing-btn" @tap="toggleStringingForm">
+            <view v-if="!showStringingForm && (userStore.isVIP || stringingCount === 0)" class="add-stringing-btn" @tap="toggleStringingForm">
               <text class="add-stringing-icon">+</text>
               <text class="add-stringing-text">添加</text>
             </view>
@@ -640,6 +665,10 @@ function onStringingFormInput(field, e) {
           </view>
         </view>
 
+        <view v-if="stringingRecords.length > 0 && !userStore.isVIP && !showStringingForm" class="vip-limit-banner" @tap="uni.navigateTo({ url: '/pages/profile/vip' })">
+          <text class="vip-limit-text">免费用户仅限 1 条穿线记录 · 升级完整版解除限制</text>
+          <text class="vip-limit-arrow">›</text>
+        </view>
         <view v-if="stringingRecords.length === 0 && !showStringingForm" class="empty-section">
           <text class="empty-section-text">暂无穿线记录</text>
         </view>
@@ -697,7 +726,7 @@ function onStringingFormInput(field, e) {
         <view class="section-header">
           <text class="section-title">更换手胶 ({{ gripCount }})</text>
           <view class="section-header-actions">
-            <view v-if="!showGripForm" class="add-stringing-btn" @tap="toggleGripForm">
+            <view v-if="!showGripForm && (userStore.isVIP || gripCount === 0)" class="add-stringing-btn" @tap="toggleGripForm">
               <text class="add-stringing-icon">+</text>
               <text class="add-stringing-text">添加</text>
             </view>
@@ -745,6 +774,10 @@ function onStringingFormInput(field, e) {
           </view>
         </view>
 
+        <view v-if="gripRecords.length > 0 && !userStore.isVIP && !showGripForm" class="vip-limit-banner" @tap="uni.navigateTo({ url: '/pages/profile/vip' })">
+          <text class="vip-limit-text">免费用户仅限 1 条手胶记录 · 升级完整版解除限制</text>
+          <text class="vip-limit-arrow">›</text>
+        </view>
         <view v-if="gripRecords.length === 0 && !showGripForm" class="empty-section">
           <text class="empty-section-text">暂无手胶记录</text>
         </view>
@@ -783,7 +816,7 @@ function onStringingFormInput(field, e) {
         </scroll-view>
       </view>
 
-      <view class="section">
+      <view v-if="userStore.isVIP" class="section">
         <view class="section-header">
           <text class="section-title">相关费用</text>
         </view>
@@ -1247,6 +1280,30 @@ function onStringingFormInput(field, e) {
 .empty-section-text {
   font-size: 26rpx;
   color: #475569;
+}
+
+.vip-limit-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 20rpx;
+  background: rgba(200, 255, 31, 0.08);
+  border: 1rpx solid rgba(200, 255, 31, 0.2);
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+}
+.vip-limit-banner:active {
+  background: rgba(200, 255, 31, 0.12);
+}
+.vip-limit-text {
+  font-size: 22rpx;
+  color: #C8FF1F;
+  flex: 1;
+}
+.vip-limit-arrow {
+  font-size: 28rpx;
+  color: #C8FF1F;
+  margin-left: 12rpx;
 }
 
 .expense-list {
