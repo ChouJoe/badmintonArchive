@@ -2,3 +2,8 @@
 node_modules/
 unpackage/
 *.log
+
+# Taobao scraper output
+scripts/.taobao-cookies.json
+scripts/taobao-models-output.json
+scripts/taobao-models-new.json
