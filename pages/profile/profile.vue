@@ -95,6 +95,17 @@ function copyUserId() {
       </view>
     </view>
 
+    <!-- 帮助与反馈 -->
+    <view class="section">
+      <text class="section-label">帮助与反馈</text>
+      <view class="info-card">
+        <view class="info-row info-row-tap" @tap="uni.navigateTo({ url: '/pages-feedback/feedback/feedback' })">
+          <text class="info-key">用户反馈</text>
+          <text class="info-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
     <!-- 关于羽札 -->
     <view class="section">
       <text class="section-label">关于羽札</text>

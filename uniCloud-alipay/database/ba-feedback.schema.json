@@ -1,0 +1,55 @@
+{
+  "bsonType": "object",
+  "required": ["user_id", "content"],
+  "permission": {
+    "read": "doc.user_id == auth.uid",
+    "create": "auth.uid != null",
+    "update": "doc.user_id == auth.uid",
+    "delete": "doc.user_id == auth.uid"
+  },
+  "properties": {
+    "_id": {
+      "description": "文档ID"
+    },
+    "user_id": {
+      "bsonType": "string",
+      "description": "所属用户ID",
+      "foreignKey": "uni-id-users._id",
+      "defaultValue": {
+        "$env": "uid"
+      }
+    },
+    "content": {
+      "bsonType": "string",
+      "description": "反馈内容",
+      "maxLength": 500
+    },
+    "images": {
+      "bsonType": "array",
+      "description": "上传图片 cloud fileID 列表",
+      "maxItems": 3
+    },
+    "nickname": {
+      "bsonType": "string",
+      "description": "用户昵称"
+    },
+    "avatar": {
+      "bsonType": "string",
+      "description": "用户头像"
+    },
+    "status": {
+      "bsonType": "string",
+      "description": "处理状态",
+      "enum": ["pending", "resolved"],
+      "defaultValue": "pending"
+    },
+    "created_at": {
+      "bsonType": "timestamp",
+      "description": "创建时间"
+    },
+    "updated_at": {
+      "bsonType": "timestamp",
+      "description": "更新时间"
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { useExpenseStore } from '@/stores/expense'
 import { useEquipmentStore } from '@/stores/equipment'
 import { useStringingStore } from '@/stores/stringing'
 import { useGripStore } from '@/stores/grip'
+import { EQUIP_TYPE_ICONS } from '@/utils/equipment-data'
 
 const userStore = useUserStore()
 const expenseStore = useExpenseStore()
@@ -23,12 +24,14 @@ const totalThisMonth = computed(() => expenseStore.totalByMonth(currentYear, cur
 
 const categorySummary = computed(() => {
   const raw = expenseStore.categorySummary
-  return [
+  const items = [
     { key: 'equipment', label: '🛒 购买', amount: raw.equipment || 0 },
     { key: 'stringing', label: '🪡 穿线', amount: raw.stringing || 0 },
     { key: 'grip', label: '✋ 手胶', amount: raw.grip || 0 },
     { key: 'manual', label: '📝 手动', amount: raw.manual || 0 },
   ].filter(c => c.amount > 0)
+  const total = items.reduce((s, c) => s + c.amount, 0) || 1
+  return items.map(c => ({ ...c, percent: Math.round((c.amount / total) * 100) }))
 })
 
 const totalSpentOnEquipment = computed(() => {
@@ -40,6 +43,72 @@ const topExpensive = computed(() => {
     .filter(item => item.price)
     .sort((a, b) => (b.price || 0) - (a.price || 0))
     .slice(0, 5)
+})
+
+const monthlyAvg = computed(() => {
+  const total = expenseStore.totalAll
+  if (total === 0) return 0
+  const months = new Set(
+    expenseStore.list.filter(e => e.date).map(e => e.date.substring(0, 7))
+  )
+  return Math.round(total / (months.size || 1))
+})
+
+const TYPE_LABELS = { racket: '球拍', shoes: '球鞋', shuttle: '羽毛球', bag: '球包', other: '其他' }
+
+const equipTypeSummary = computed(() => {
+  const count = {}
+  equipStore.list.forEach(item => {
+    count[item.type] = (count[item.type] || 0) + 1
+  })
+  const total = equipStore.list.length || 1
+  return Object.entries(count)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([type, cnt]) => ({
+      type,
+      label: TYPE_LABELS[type] || type,
+      count: cnt,
+      percent: Math.round((cnt / total) * 100)
+    }))
+})
+
+const avgStringingTension = computed(() => {
+  const records = stringingStore.list
+  if (records.length === 0) return null
+  const validH = records.filter(r => r.tensionH)
+  const validV = records.filter(r => r.tensionV)
+  const avgH = validH.length
+    ? validH.reduce((s, r) => s + r.tensionH, 0) / validH.length
+    : null
+  const avgV = validV.length
+    ? validV.reduce((s, r) => s + r.tensionV, 0) / validV.length
+    : null
+  if (avgH === null && avgV === null) return null
+  return { h: avgH, v: avgV }
+})
+
+const topStringBrand = computed(() => {
+  const records = stringingStore.list.filter(r => r.stringBrand)
+  if (records.length === 0) return null
+  const count = {}
+  records.forEach(r => {
+    count[r.stringBrand] = (count[r.stringBrand] || 0) + 1
+  })
+  return Object.entries(count).sort((a, b) => b[1] - a[1])[0]
+})
+
+const stringingFrequency = computed(() => {
+  const records = [...stringingStore.list]
+    .filter(r => r.date)
+    .sort((a, b) => a.date.localeCompare(b.date))
+  if (records.length < 2) return null
+  let totalDays = 0
+  for (let i = 1; i < records.length; i++) {
+    const d1 = new Date(records[i - 1].date)
+    const d2 = new Date(records[i].date)
+    totalDays += (d2 - d1) / 86400000
+  }
+  return Math.round(totalDays / (records.length - 1))
 })
 
 const monthlyData = computed(() => expenseStore.monthlySummary)
@@ -75,7 +144,7 @@ onShow(async () => {
 <template>
   <view class="page">
     <view class="page-header">
-      <text class="page-title">费用概览</text>
+      <text class="page-title">      数据统计</text>
     </view>
 
     <scroll-view scroll-y class="page-body">
@@ -100,6 +169,10 @@ onShow(async () => {
           <text class="summary-label">{{ currentYear }}/{{ currentMonth }}</text>
           <text class="summary-value">¥{{ totalThisMonth }}</text>
         </view>
+        <view class="summary-card avg">
+          <text class="summary-label">月均花费</text>
+          <text class="summary-value">¥{{ monthlyAvg }}</text>
+        </view>
       </view>
 
       <template v-if="userStore.isVIP">
@@ -120,6 +193,54 @@ onShow(async () => {
         <view class="quick-stat-item">
           <text class="quick-stat-value">{{ retiredCount }}</text>
           <text class="quick-stat-label">已淘汰</text>
+        </view>
+      </view>
+
+      <!-- Equipment Type Distribution -->
+      <view class="section">
+        <text class="section-title">装备类型分布</text>
+        <view class="type-distribution" v-if="equipTypeSummary.length > 0">
+          <view
+            v-for="item in equipTypeSummary"
+            :key="item.type"
+            class="type-dist-item"
+          >
+            <view class="type-dist-header">
+              <view class="type-dist-left">
+                <uni-icons fontFamily="iconfont" :size="24" color="#9ca3af">{{ EQUIP_TYPE_ICONS[item.type] }}</uni-icons>
+                <text class="type-dist-label">{{ item.label }}</text>
+              </view>
+              <text class="type-dist-count">{{ item.count }} 件</text>
+            </view>
+            <view class="type-dist-bar-bg">
+              <view
+                class="type-dist-bar-fill"
+                :style="{ width: item.percent + '%' }"
+              ></view>
+            </view>
+          </view>
+        </view>
+        <view v-else class="empty-section">
+          <text class="empty-section-text">暂无装备数据</text>
+        </view>
+      </view>
+
+      <!-- Stringing Data -->
+      <view v-if="stringingCount > 0" class="section">
+        <text class="section-title">穿线数据</text>
+        <view class="stringing-data-grid">
+          <view v-if="avgStringingTension" class="stringing-data-card">
+            <text class="stringing-data-value">{{ avgStringingTension.h !== null ? avgStringingTension.h.toFixed(1) : '-' }}/{{ avgStringingTension.v !== null ? avgStringingTension.v.toFixed(1) : '-' }}</text>
+            <text class="stringing-data-label">平均磅数</text>
+          </view>
+          <view v-if="topStringBrand" class="stringing-data-card">
+            <text class="stringing-data-value stringing-data-value-sm">{{ topStringBrand[0] }}</text>
+            <text class="stringing-data-label">常用线品牌</text>
+          </view>
+          <view v-if="stringingFrequency" class="stringing-data-card">
+            <text class="stringing-data-value">{{ stringingFrequency }}<text class="stringing-data-unit">天</text></text>
+            <text class="stringing-data-label">平均穿线间隔</text>
+          </view>
         </view>
       </view>
 
@@ -156,8 +277,17 @@ onShow(async () => {
             :key="cat.key"
             class="category-item"
           >
-            <text class="category-label">{{ cat.label }}</text>
-            <text class="category-amount">¥{{ cat.amount }}</text>
+            <view class="category-top">
+              <text class="category-label">{{ cat.label }}</text>
+              <text class="category-amount">¥{{ cat.amount }}</text>
+            </view>
+            <view class="category-bar-bg">
+              <view
+                class="category-bar-fill"
+                :style="{ width: cat.percent + '%' }"
+              ></view>
+            </view>
+            <text class="category-percent">{{ cat.percent }}%</text>
           </view>
         </view>
         <view v-else class="empty-section">
@@ -369,6 +499,89 @@ onShow(async () => {
   color: #6b7280;
 }
 
+/* Equipment Type Distribution */
+.type-distribution {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  background-color: #1a1f2a;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+.type-dist-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+.type-dist-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.type-dist-left {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+.type-dist-label {
+  font-size: 26rpx;
+  color: #e5e5e7;
+}
+.type-dist-count {
+  font-size: 22rpx;
+  color: #6b7280;
+}
+.type-dist-bar-bg {
+  width: 100%;
+  height: 8rpx;
+  background-color: #1e2430;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+.type-dist-bar-fill {
+  height: 100%;
+  background-color: #C8FF1F;
+  border-radius: 4rpx;
+  transition: width 0.3s;
+}
+
+/* Stringing Data */
+.stringing-data-grid {
+  display: flex;
+  gap: 16rpx;
+}
+.stringing-data-card {
+  flex: 1;
+  background-color: #1a1f2a;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  align-items: center;
+}
+.stringing-data-value {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #C8FF1F;
+}
+.stringing-data-value-sm {
+  font-size: 24rpx;
+  word-break: break-all;
+  text-align: center;
+  line-height: 1.3;
+}
+.stringing-data-unit {
+  font-size: 20rpx;
+  color: #C8FF1F;
+  font-weight: 400;
+  margin-left: 4rpx;
+}
+.stringing-data-label {
+  font-size: 20rpx;
+  color: #6b7280;
+}
+
 /* Category List */
 .category-list {
   display: flex;
@@ -377,11 +590,16 @@ onShow(async () => {
 }
 .category-item {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 8rpx;
   background-color: #1a1f2a;
   border-radius: 12rpx;
   padding: 24rpx 20rpx;
+}
+.category-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .category-label {
   font-size: 26rpx;
@@ -391,6 +609,24 @@ onShow(async () => {
   font-size: 28rpx;
   font-weight: 700;
   color: #C8FF1F;
+}
+.category-bar-bg {
+  width: 100%;
+  height: 8rpx;
+  background-color: #1e2430;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+.category-bar-fill {
+  height: 100%;
+  background-color: #C8FF1F;
+  border-radius: 4rpx;
+  transition: width 0.3s;
+}
+.category-percent {
+  font-size: 20rpx;
+  color: #6b7280;
+  text-align: right;
 }
 
 /* Expense List */

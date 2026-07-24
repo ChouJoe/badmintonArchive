@@ -4,6 +4,7 @@ const COLLECTIONS = {
   grip: 'ba-grip',
   expenses: 'ba-expenses',
   profile: 'ba-profiles',
+  feedback: 'ba-feedback',
 }
 
 exports.main = async (event, context) => {

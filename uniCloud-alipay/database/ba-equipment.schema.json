@@ -59,6 +59,10 @@
       "bsonType": "string",
       "description": "备注"
     },
+    "userPhoto": {
+      "bsonType": "string",
+      "description": "用户上传的装备照片 cloud:// 文件ID"
+    },
     "created_at": {
       "bsonType": "timestamp",
       "description": "创建时间"

@@ -3,11 +3,15 @@ import { ref, computed, onMounted } from 'vue'
 import { onLoad, onBackPress } from '@dcloudio/uni-app'
 import { useEquipmentStore } from '@/stores/equipment'
 import { useExpenseStore } from '@/stores/expense'
+import { useUserStore } from '@/stores/user'
+import { ensureSession } from '@/utils/auth'
+import { resolveCloudUrl } from '@/utils/cloud-image'
 import { getBrandsByType, getModelsByBrand, getBrandLogo, getBrandDisplayName, getModelDisplayName, EQUIP_TYPE_ICONS } from '@/utils/equipment-data'
 
 
 const store = useEquipmentStore()
 const expenseStore = useExpenseStore()
+const userStore = useUserStore()
 const statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 40
 
 function getHeaderRight() {
@@ -45,6 +49,10 @@ const modelSearchText = ref('')
 const isCustomBrand = ref(false)
 const isCustomModel = ref(false)
 
+const userPhoto = ref('')
+const userPhotoPreview = ref('')
+const photoUploading = ref(false)
+
 onLoad(async (query) => {
   if (query.id) {
     await store.load()
@@ -62,6 +70,10 @@ onLoad(async (query) => {
         retired: item.retired || false,
         tag: item.tag || '',
         note: item.note || ''
+      }
+      if (item.userPhoto) {
+        userPhoto.value = item.userPhoto
+        userPhotoPreview.value = item.userPhotoUrl || await resolveCloudUrl(item.userPhoto)
       }
     }
   }
@@ -225,6 +237,56 @@ function handleDateChange(e) {
   form.value.buyDate = e.detail.value
 }
 
+async function choosePhoto() {
+  if (photoUploading.value) return
+  if (!userStore.isVIP) {
+    uni.showModal({
+      title: '完整版功能',
+      content: '上传装备照片为完整版功能，升级后即可使用。',
+      showCancel: true,
+      success: (res) => {
+        if (res.confirm) uni.navigateTo({ url: '/pages/profile/vip' })
+      }
+    })
+    return
+  }
+  try {
+    const res = await uni.chooseImage({
+      count: 1,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera']
+    })
+    const tempPath = res.tempFilePaths[0]
+    photoUploading.value = true
+    const session = await ensureSession()
+    const ext = tempPath.split('.').pop() || 'jpg'
+    const uploadRes = await uniCloud.uploadFile({
+      filePath: tempPath,
+      cloudPath: `equipment/${session.uid}_${Date.now()}.${ext}`
+    })
+    userPhoto.value = uploadRes.fileID
+    userPhotoPreview.value = await resolveCloudUrl(uploadRes.fileID)
+  } catch (e) {
+    if (e.errMsg !== 'chooseImage:fail cancel') {
+      console.error('Photo upload failed:', e)
+      uni.showToast({ title: '图片上传失败', icon: 'none' })
+    }
+  } finally {
+    photoUploading.value = false
+  }
+}
+
+function removePhoto() {
+  userPhoto.value = ''
+  userPhotoPreview.value = ''
+}
+
+function previewPhoto() {
+  if (userPhotoPreview.value) {
+    uni.previewImage({ urls: [userPhotoPreview.value] })
+  }
+}
+
 async function handleSubmit() {
   if (!form.value.brand.trim()) {
     uni.showToast({ title: '请填写品牌', icon: 'none' })
@@ -245,6 +307,7 @@ async function handleSubmit() {
     retired: form.value.retired,
     tag: form.value.tag.trim() || null,
     note: form.value.note.trim() || null,
+    userPhoto: userPhoto.value || null,
   }
 
   if (isEditMode.value) {
@@ -312,6 +375,28 @@ async function handleDelete() {
     </view>
 
     <scroll-view scroll-y class="page-body">
+      <!-- PHOTO -->
+      <view class="form-section">
+        <text class="form-label">装备照片</text>
+        <view v-if="userPhotoPreview" class="photo-preview-wrap">
+          <image class="photo-preview" :src="userPhotoPreview" mode="aspectFill" @tap="previewPhoto" />
+          <view class="photo-remove" @tap="removePhoto">
+            <text class="photo-remove-icon">✕</text>
+          </view>
+        </view>
+        <view
+          v-else
+          class="photo-uploader"
+          :class="{ uploading: photoUploading }"
+          @tap="choosePhoto"
+        >
+          <text class="photo-uploader-icon">{{ photoUploading ? '...' : '＋' }}</text>
+          <text class="photo-uploader-text">
+            {{ photoUploading ? '上传中' : (userStore.isVIP ? '上传照片' : '完整版可上传照片') }}
+          </text>
+        </view>
+      </view>
+
       <!-- TYPE -->
       <view class="form-section">
         <text class="form-label">类型 <text class="required">*</text></text>
@@ -802,6 +887,61 @@ async function handleDelete() {
 
 .bottom-spacer {
   height: 200rpx;
+}
+
+/* Photo Upload */
+.photo-preview-wrap {
+  position: relative;
+  width: 100%;
+  height: 320rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+.photo-preview {
+  width: 100%;
+  height: 100%;
+}
+.photo-remove {
+  position: absolute;
+  top: 12rpx;
+  right: 12rpx;
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 24rpx;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.photo-remove-icon {
+  font-size: 24rpx;
+  color: #ffffff;
+}
+.photo-uploader {
+  width: 100%;
+  height: 320rpx;
+  border: 2rpx dashed #3a3f4a;
+  border-radius: 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  background-color: #1a1f2a;
+}
+.photo-uploader:active {
+  background: rgba(255, 255, 255, 0.04);
+}
+.photo-uploader.uploading {
+  opacity: 0.5;
+}
+.photo-uploader-icon {
+  font-size: 56rpx;
+  color: #4b5563;
+}
+.photo-uploader-text {
+  font-size: 24rpx;
+  color: #6b7280;
 }
 
 /* Picker Overlay */

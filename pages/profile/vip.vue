@@ -13,7 +13,7 @@ const features = [
   { label: '消费统计', free: '✗', pro: '✓' },
   { label: '装备使用周期进度条', free: '✗', pro: '✓' },
   { label: '更换装备提示', free: '✗', pro: '✓' },
-  { label: '上传装备照片', free: '✗', pro: '开发中' },
+  { label: '上传装备照片', free: '✗', pro: '✓' },
   { label: '更多功能', free: '✗', pro: '开发中' },
 ]
 

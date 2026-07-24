@@ -60,6 +60,7 @@ onLoad(async (query) => {
     gripStore.load(),
     expenseStore.load()
   ])
+  if (showUserPhoto.value) return
   if (!hasModelImage.value) {
     loadDone.value = true
   }
@@ -68,6 +69,7 @@ onLoad(async (query) => {
 const imgReady = ref(false)
 const loadDone = ref(false)
 const logoFailed = ref(false)
+const userPhotoFailed = ref(false)
 const hasModelImage = computed(() => {
   if (!equip.value) return false
   return !!getModelImageUrl(equip.value.brand, equip.value.model)
@@ -76,8 +78,9 @@ const hasBrandLogo = computed(() => {
   if (!equip.value) return false
   return !!getBrandLogo(equip.value.brand)
 })
-const showModel = computed(() => imgReady.value)
-const showDefaultBkg = computed(() => loadDone.value && !imgReady.value && (!hasBrandLogo.value || logoFailed.value))
+const showUserPhoto = computed(() => !!equip.value?.userPhotoUrl && !userPhotoFailed.value)
+const showModel = computed(() => !showUserPhoto.value && imgReady.value)
+const showDefaultBkg = computed(() => !showUserPhoto.value && loadDone.value && !imgReady.value && (!hasBrandLogo.value || logoFailed.value))
 
 function onImgLoad() {
   imgReady.value = true
@@ -89,6 +92,12 @@ function onImgError() {
 function onLogoError() {
   logoFailed.value = true
 }
+function onUserPhotoError() {
+  userPhotoFailed.value = true
+  if (!hasModelImage.value) {
+    loadDone.value = true
+  }
+}
 
 const cardImage = computed(() => {
   if (!equip.value) return null
@@ -99,6 +108,8 @@ const brandLogo = computed(() => {
   if (!equip.value) return null
   return getBrandLogo(equip.value.brand)
 })
+
+const userPhotoUrl = computed(() => equip.value?.userPhotoUrl || '')
 
 const stringingRecords = computed(() => {
   const records = stringingStore.getByEquipId(equipId.value)
@@ -478,7 +489,14 @@ function onStringingFormInput(field, e) {
     <scroll-view scroll-y class="page-body" v-if="equip">
       <view class="equip-hero">
         <image
-          v-if="showModel"
+          v-if="showUserPhoto"
+          class="equip-hero-img"
+          :src="userPhotoUrl"
+          mode="aspectFill"
+          @error="onUserPhotoError"
+        />
+        <image
+          v-else-if="showModel"
           class="equip-hero-img"
           :src="cardImage"
           mode="aspectFill"
@@ -491,7 +509,7 @@ function onStringingFormInput(field, e) {
           @error="onLogoError"
         />
         <image
-          v-if="hasModelImage && !loadDone"
+          v-if="!showUserPhoto && hasModelImage && !loadDone"
           class="equip-hero-img-preload"
           :src="cardImage"
           @load="onImgLoad"

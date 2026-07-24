@@ -57,6 +57,20 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages-feedback",
+            "pages": [
+                {
+                    "path": "feedback/feedback",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "",
+                        "navigationBarBackgroundColor": "#0f1117",
+                        "navigationBarTextStyle": "white"
+                    }
+                }
+            ]
         }
     ],
     "tabBar": {
@@ -112,6 +126,10 @@
         "pages/equip-list/equip-list": {
             "network": "all",
             "packages": ["pages-equip"]
+        },
+        "pages/profile/profile": {
+            "network": "all",
+            "packages": ["pages-feedback"]
         }
     },
     "globalStyle": {

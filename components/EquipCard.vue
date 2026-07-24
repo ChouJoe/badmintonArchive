@@ -16,11 +16,13 @@ const emit = defineEmits(['click'])
 const imgReady = ref(false)
 const loadDone = ref(false)
 const logoFailed = ref(false)
+const userPhotoFailed = ref(false)
 const hasModelImage = computed(() => !!getModelImageUrl(props.item.brand, props.item.model))
 const hasBrandLogo = computed(() => !!getBrandLogo(props.item.brand))
 
-const showModel = computed(() => imgReady.value)
-const showDefaultBkg = computed(() => loadDone.value && !imgReady.value && (!hasBrandLogo.value || logoFailed.value))
+const showUserPhoto = computed(() => !!props.item.userPhotoUrl && !userPhotoFailed.value)
+const showModel = computed(() => !showUserPhoto.value && imgReady.value)
+const showDefaultBkg = computed(() => !showUserPhoto.value && loadDone.value && !imgReady.value && (!hasBrandLogo.value || logoFailed.value))
 
 function onImgLoad() {
   imgReady.value = true
@@ -32,8 +34,15 @@ function onImgError() {
 function onLogoError() {
   logoFailed.value = true
 }
+function onUserPhotoError() {
+  userPhotoFailed.value = true
+  if (!hasModelImage.value) {
+    loadDone.value = true
+  }
+}
 
 onMounted(() => {
+  if (showUserPhoto.value) return
   if (!hasModelImage.value) {
     loadDone.value = true
   }
@@ -145,7 +154,14 @@ function onClick() {
 <template>
   <view class="card" @tap="onClick">
     <image
-      v-if="showModel"
+      v-if="showUserPhoto"
+      class="card-bg"
+      :src="item.userPhotoUrl"
+      mode="aspectFill"
+      @error="onUserPhotoError"
+    />
+    <image
+      v-else-if="showModel"
       class="card-bg"
       :src="getModelImageUrl(item.brand, item.model)"
       mode="aspectFill"
@@ -158,7 +174,7 @@ function onClick() {
       @error="onLogoError"
     />
     <image
-      v-if="hasModelImage && !loadDone"
+      v-if="!showUserPhoto && hasModelImage && !loadDone"
       class="card-bg-preload"
       :src="getModelImageUrl(item.brand, item.model)"
       @load="onImgLoad"

@@ -1,9 +1,21 @@
 import { defineStore } from 'pinia'
 import * as cloud from '@/utils/cloud'
 import { useUserStore, FREE_EQUIP_LIMIT } from './user'
+import { resolveCloudUrl, resolveCloudUrls } from '@/utils/cloud-image'
 
 function mapDoc(doc) {
   return { ...doc, id: doc._id }
+}
+
+async function resolveUserPhotos(items) {
+  const fileIDs = items.filter(i => i.userPhoto).map(i => i.userPhoto)
+  if (fileIDs.length === 0) return
+  const urlMap = await resolveCloudUrls(fileIDs)
+  items.forEach(item => {
+    if (item.userPhoto && urlMap[item.userPhoto]) {
+      item.userPhotoUrl = urlMap[item.userPhoto]
+    }
+  })
 }
 
 export const useEquipmentStore = defineStore('equipment', {
@@ -26,7 +38,9 @@ export const useEquipmentStore = defineStore('equipment', {
       this.loading = true
       try {
         const data = await cloud.getAll('equipment', { field: 'created_at', direction: 'desc' })
-        this.list = data.map(mapDoc)
+        const items = data.map(mapDoc)
+        await resolveUserPhotos(items)
+        this.list = items
         this.loaded = true
       } catch (e) {
         console.error('Failed to load equipment:', e)
@@ -53,14 +67,22 @@ export const useEquipmentStore = defineStore('equipment', {
       }
       const { id, ...data } = item
       const docId = await cloud.add('equipment', data)
-      this.list.unshift({ ...data, _id: docId, id: docId })
+      const newItem = { ...data, _id: docId, id: docId }
+      if (newItem.userPhoto) {
+        newItem.userPhotoUrl = await resolveCloudUrl(newItem.userPhoto)
+      }
+      this.list.unshift(newItem)
     },
 
     async update(id, data) {
       await cloud.update('equipment', id, data)
       const idx = this.list.findIndex(item => item.id === id || item._id === id)
       if (idx !== -1) {
-        this.list[idx] = { ...this.list[idx], ...data }
+        const updated = { ...this.list[idx], ...data }
+        if (data.userPhoto !== undefined) {
+          updated.userPhotoUrl = data.userPhoto ? await resolveCloudUrl(data.userPhoto) : ''
+        }
+        this.list[idx] = updated
       }
     },
 

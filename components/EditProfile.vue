@@ -2,6 +2,7 @@
 import { ref, watch, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { ensureSession } from '@/utils/auth'
+import { resolveCloudUrl } from '@/utils/cloud-image'
 
 const userStore = useUserStore()
 
@@ -59,19 +60,7 @@ async function onChooseAvatar(e) {
       cloudPath: `avatars/${session.uid}_${Date.now()}.${ext}`,
     })
     pendingFileID.value = result.fileID
-    let previewUrl = ''
-    try {
-      const urlRes = await uniCloud.getTempFileURL({
-        fileList: [result.fileID]
-      })
-      previewUrl = urlRes.fileList?.[0]?.tempFileURL
-    } catch {}
-    if (!previewUrl || previewUrl.startsWith('cloud://')) {
-      const match = result.fileID.match(/^cloud:\/\/([^/]+)\/(.+)$/)
-      if (match) {
-        previewUrl = `https://${match[1]}.normal.cloudstatic.cn/${match[2]}`
-      }
-    }
+    const previewUrl = await resolveCloudUrl(result.fileID)
     editForm.value.avatar = previewUrl || ''
   } catch (err) {
     console.error('Avatar upload failed:', err)
